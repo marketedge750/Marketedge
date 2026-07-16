@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script>(function(){try{if(localStorage.getItem('marketedge-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
 </head>
 <body>
 
@@ -44,7 +43,7 @@
         <li><a href="investing-basics.html">Start Learning</a></li>
         <li><a href="broker-comparison.html">Compare Brokers</a></li>
       </ul>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button><button class="hamburger" id="hamburger">&#9776;</button>
+      <button class="hamburger" id="hamburger">&#9776;</button>
     </div>
   </nav>
 
@@ -73,109 +72,38 @@
     <div class="ad-placeholder leaderboard">[ Google AdSense — 728×90 Leaderboard ]</div>
   </div>
 
-  <!-- MARKET PULSE DASHBOARD -->
-  <section class="market-pulse section-gap container">
-    <div class="section-eyebrow">Live Market Pulse</div>
-    <h2 class="section-title">Markets at a Glance</h2>
-    <div class="pulse-grid">
-      <div class="dash-card" data-symbol="sp500">
-        <div class="dash-card-top"><span class="dash-label">S&amp;P 500</span><span class="dash-change up" data-change>+0.42%</span></div>
-        <div class="dash-price" data-price>5,847</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="up" points="0,22 20,20 40,17 60,14 80,10 100,4" /></svg>
-      </div>
-      <div class="dash-card" data-symbol="nasdaq">
-        <div class="dash-card-top"><span class="dash-label">NASDAQ</span><span class="dash-change up" data-change>+0.78%</span></div>
-        <div class="dash-price" data-price>19,203</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="up" points="0,22 20,19 40,16 60,12 80,8 100,3" /></svg>
-      </div>
-      <div class="dash-card" data-symbol="btc">
-        <div class="dash-card-top"><span class="dash-label">Bitcoin</span><span class="dash-change down" data-change>−1.12%</span></div>
-        <div class="dash-price" data-price>$96,410</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="down" points="0,8 20,10 40,13 60,16 80,20 100,24" /></svg>
-      </div>
-      <div class="dash-card" data-symbol="eth">
-        <div class="dash-card-top"><span class="dash-label">Ethereum</span><span class="dash-change down" data-change>−0.87%</span></div>
-        <div class="dash-price" data-price>$3,240</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="down" points="0,8 20,11 40,14 60,17 80,20 100,23" /></svg>
-      </div>
-      <div class="dash-card" data-symbol="gold">
-        <div class="dash-card-top"><span class="dash-label">Gold</span><span class="dash-change up" data-change>+0.31%</span></div>
-        <div class="dash-price" data-price>$4,312</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="up" points="0,20 20,18 40,16 60,13 80,10 100,7" /></svg>
-      </div>
-      <div class="dash-card" data-symbol="eurusd">
-        <div class="dash-card-top"><span class="dash-label">EUR/USD</span><span class="dash-change up" data-change>+0.19%</span></div>
-        <div class="dash-price" data-price>1.0841</div>
-        <svg class="dash-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark class="up" points="0,20 20,18 40,17 60,15 80,12 100,9" /></svg>
-      </div>
-    </div>
-    <div class="top-mover" id="top-mover">
-      <span class="top-mover-label">🔥 Today's Top Mover</span>
-      <span class="top-mover-value" id="top-mover-value">Loading live data…</span>
-    </div>
-    <p class="pulse-disclaimer">Live prices update every 60 seconds. Trend lines are illustrative of direction, not tick-by-tick history.</p>
-
-    <div class="live-chart-card">
-      <div class="live-chart-head">
-        <div>
-          <span class="live-chart-title">Bitcoin — Last 24 Hours</span>
-          <span class="live-chart-badge" id="chart-price">Loading…</span>
-        </div>
-        <span class="live-dot">● LIVE</span>
-      </div>
-      <canvas id="btc-chart" height="220"></canvas>
-      <p class="pulse-disclaimer">Real historical price data from CoinGecko, refreshed every 60 seconds.</p>
-    </div>
-  </section>
-
-  <!-- CATEGORY NAV -->
-  <div class="category-pills container">
-    <a href="#trending" class="pill active">Markets</a>
-    <a href="investing-basics.html" class="pill">Investing Basics</a>
-    <a href="crypto.html" class="pill">Crypto</a>
-    <a href="broker-comparison.html" class="pill">Broker Reviews</a>
-  </div>
-
   <!-- TRENDING TOPICS -->
-  <section class="trending section-gap container" id="trending">
+  <section class="trending section-gap container">
     <div class="section-eyebrow">What's Moving Markets</div>
     <h2 class="section-title">Trending Right Now</h2>
     <div class="trend-grid">
       <article class="trend-card featured">
-        <img class="trend-photo" src="https://images.unsplash.com/photo-1527305265013-ddd1054521d6?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="New York financial district skyline" loading="lazy" />
-        <div class="trend-body">
-          <div class="trend-tag">Deep Dive</div>
-          <h3><a href="etf-guide.html">The 2026 ETF Playbook: What Every Investor Needs to Know</a></h3>
-          <p>AI infrastructure, energy transition, and value rotation — how to position your portfolio for the themes shaping markets this year.</p>
-          <div class="card-meta"><span class="read-time">9 min read</span><span class="category-dot etfs"></span><span>ETFs</span></div>
-        </div>
+        <svg class="trend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l5-6 4 3 6-8 3 3" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="trend-tag">Deep Dive</div>
+        <h3><a href="etf-guide.html">The 2026 ETF Playbook: What Every Investor Needs to Know</a></h3>
+        <p>AI infrastructure, energy transition, and value rotation — how to position your portfolio for the themes shaping markets this year.</p>
+        <div class="card-meta"><span class="read-time">9 min read</span><span class="category-dot etfs"></span><span>ETFs</span></div>
       </article>
       <article class="trend-card">
-        <img class="trend-photo" src="https://images.unsplash.com/photo-1718752773283-de1f92513671?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Stacked gold bullion bars" loading="lazy" />
-        <div class="trend-body">
-          <div class="trend-tag">Analysis</div>
-          <h3><a href="gold-outlook.html">Gold at $4,300: Strategic Asset or Crowded Trade?</a></h3>
-          <p>Central banks now hold more gold than U.S. Treasuries. We break down what that means for retail investors.</p>
-          <div class="card-meta"><span class="read-time">6 min read</span><span class="category-dot commodities"></span><span>Commodities</span></div>
-        </div>
+        <svg class="trend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="#D4A017" stroke-width="2"/><path d="M12 8v4l3 2" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="trend-tag">Analysis</div>
+        <h3><a href="gold-outlook.html">Gold at $4,300: Strategic Asset or Crowded Trade?</a></h3>
+        <p>Central banks now hold more gold than U.S. Treasuries. We break down what that means for retail investors.</p>
+        <div class="card-meta"><span class="read-time">6 min read</span><span class="category-dot commodities"></span><span>Commodities</span></div>
       </article>
       <article class="trend-card">
-        <img class="trend-photo" src="https://images.unsplash.com/photo-1735825764460-c5dec05d6253?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Person reviewing finances on a laptop" loading="lazy" />
-        <div class="trend-body">
-          <div class="trend-tag">Beginner</div>
-          <h3><a href="investing-basics.html">How to Start Investing With $500 in 2026</a></h3>
-          <p>A step-by-step guide to opening your first brokerage account, choosing low-cost funds, and avoiding common mistakes.</p>
-          <div class="card-meta"><span class="read-time">7 min read</span><span class="category-dot basics"></span><span>Basics</span></div>
-        </div>
+        <svg class="trend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4v16h16" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/><path d="M7 15l4-4 3 3 5-6" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="trend-tag">Beginner</div>
+        <h3><a href="investing-basics.html">How to Start Investing With $500 in 2026</a></h3>
+        <p>A step-by-step guide to opening your first brokerage account, choosing low-cost funds, and avoiding common mistakes.</p>
+        <div class="card-meta"><span class="read-time">7 min read</span><span class="category-dot basics"></span><span>Basics</span></div>
       </article>
       <article class="trend-card">
-        <img class="trend-photo" src="https://images.unsplash.com/photo-1767424412548-1a1ac7f4b9bc?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Trading charts displayed on multiple screens" loading="lazy" />
-        <div class="trend-body">
-          <div class="trend-tag">Comparison</div>
-          <h3><a href="broker-comparison.html">Best Online Brokers for 2026: Fees, Features &amp; Verdict</a></h3>
-          <p>We tested 6 platforms so you don't have to. See our top picks for beginners, active traders, and long-term investors.</p>
-          <div class="card-meta"><span class="read-time">12 min read</span><span class="category-dot brokers"></span><span>Brokers</span></div>
-        </div>
+        <svg class="trend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="10" width="4" height="10" stroke="#0FA3B1" stroke-width="2"/><rect x="10" y="5" width="4" height="15" stroke="#0FA3B1" stroke-width="2"/><rect x="17" y="13" width="4" height="7" stroke="#0FA3B1" stroke-width="2"/></svg>
+        <div class="trend-tag">Comparison</div>
+        <h3><a href="broker-comparison.html">Best Online Brokers for 2026: Fees, Features &amp; Verdict</a></h3>
+        <p>We tested 6 platforms so you don't have to. See our top picks for beginners, active traders, and long-term investors.</p>
+        <div class="card-meta"><span class="read-time">12 min read</span><span class="category-dot brokers"></span><span>Brokers</span></div>
       </article>
     </div>
   </section>
@@ -341,7 +269,6 @@
     </div>
   <div class="visitor-counter" style="text-align:center;padding:8px 0;"><img src="https://api.visitorbadge.io/api/visitors?path=marketedge-zippy-pavlova-49449e&label=Visitors&countColor=%23263759&style=flat" alt="Visitor count" /></div></footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
