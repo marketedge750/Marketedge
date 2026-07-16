@@ -205,6 +205,34 @@ function handleSubscribe(e) {
   btn.disabled = true;
 }
 
+// Dark/light theme toggle (preference saved in localStorage)
+(function () {
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const saved = localStorage.getItem('marketedge-theme');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+      if (toggleBtn) toggleBtn.textContent = '☀️';
+    } else {
+      root.removeAttribute('data-theme');
+      if (toggleBtn) toggleBtn.textContent = '🌙';
+    }
+  }
+
+  applyTheme(saved === 'dark' ? 'dark' : 'light');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('marketedge-theme', next);
+    });
+  }
+})();
+
 // Mobile hamburger (simple toggle)
 const hamburger = document.getElementById('hamburger');
 if (hamburger) {

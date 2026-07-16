@@ -186,8 +186,25 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   font-size: 1.4rem;
   cursor: pointer;
   color: var(--ink);
+  margin-left: 12px;
+}
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
   margin-left: auto;
 }
+.theme-toggle:hover { border-color: var(--accent); }
 
 /* ===========================
    HERO
@@ -907,3 +924,75 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   .footer-links { flex-direction: column; gap: 24px; }
   .footer-bottom { flex-direction: column; text-align: center; }
 }
+
+/* ===========================
+   DARK THEME
+   =========================== */
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+html[data-theme="dark"] body { background: #0D1117; color: #E6EDF3; }
+html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3,
+html[data-theme="dark"] h4, html[data-theme="dark"] h5 { color: #E6EDF3; }
+html[data-theme="dark"] p, html[data-theme="dark"] li { color: #C3CAD4; }
+html[data-theme="dark"] .section-title { color: #E6EDF3; }
+html[data-theme="dark"] .section-sub { color: #8B93A1; }
+html[data-theme="dark"] .section-eyebrow { color: var(--accent-hi); }
+
+/* Nav (ticker strip & hero stay dark in both themes already) */
+html[data-theme="dark"] .nav { background: #0D1117; border-bottom-color: #30363D; }
+html[data-theme="dark"] .logo { color: #E6EDF3; }
+html[data-theme="dark"] .nav-links a { color: #C3CAD4; }
+html[data-theme="dark"] .nav-links a:hover, html[data-theme="dark"] .nav-links a.active { color: var(--accent-hi) !important; }
+html[data-theme="dark"] .hamburger { color: #E6EDF3; }
+html[data-theme="dark"] .theme-toggle { color: #E6EDF3; }
+
+/* Cards */
+html[data-theme="dark"] .dash-card,
+html[data-theme="dark"] .trend-card:not(.featured),
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .tool-card,
+html[data-theme="dark"] .sidebar-widget,
+html[data-theme="dark"] .broker-review,
+html[data-theme="dark"] .highlight-box,
+html[data-theme="dark"] .verdict-box,
+html[data-theme="dark"] .step,
+html[data-theme="dark"] .quick-nav,
+html[data-theme="dark"] .ad-placeholder,
+html[data-theme="dark"] .calc-result {
+  background: #161B22 !important;
+  border-color: #30363D !important;
+}
+html[data-theme="dark"] .dash-price, html[data-theme="dark"] .trend-card h3 a,
+html[data-theme="dark"] .guide-card h3, html[data-theme="dark"] .tool-card h2,
+html[data-theme="dark"] .broker-review h3, html[data-theme="dark"] .result-num {
+  color: #E6EDF3 !important;
+}
+html[data-theme="dark"] .trend-card h3 a:hover { color: var(--accent-hi) !important; }
+html[data-theme="dark"] .dash-label, html[data-theme="dark"] .card-meta,
+html[data-theme="dark"] .read-time, html[data-theme="dark"] .ad-label,
+html[data-theme="dark"] .form-note, html[data-theme="dark"] .table-disclaimer,
+html[data-theme="dark"] .pulse-disclaimer { color: #7A8394 !important; }
+
+/* Pills & buttons */
+html[data-theme="dark"] .pill { border-color: #30363D; color: #C3CAD4; }
+html[data-theme="dark"] .pill.active { background: #E6EDF3; color: #0D1117; border-color: #E6EDF3; }
+html[data-theme="dark"] .pill:hover { border-color: var(--accent-hi); color: var(--accent-hi); }
+
+/* Tables */
+html[data-theme="dark"] .broker-table { background: #161B22; }
+html[data-theme="dark"] .broker-table td { border-bottom-color: #30363D; color: #C3CAD4; }
+html[data-theme="dark"] .broker-table td strong { color: #E6EDF3; }
+html[data-theme="dark"] .broker-table .top-pick td { background: rgba(15,163,177,0.08); }
+
+/* Forms */
+html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea {
+  background: #161B22; border-color: #30363D; color: #E6EDF3;
+}
+html[data-theme="dark"] .contact-form label { color: #C3CAD4; }
+
+/* Top mover / misc accents */
+html[data-theme="dark"] .top-mover { background: rgba(15,163,177,0.1); border-color: var(--accent-hi); }
+html[data-theme="dark"] .breadcrumb { color: rgba(255,255,255,0.5); }
+html[data-theme="dark"] .main-content h2 { border-top-color: #30363D; }
+html[data-theme="dark"] .footer-bottom { border-top-color: #30363D; }
