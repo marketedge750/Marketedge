@@ -88,32 +88,21 @@ function setDashCard(symbol, label, priceText, changePercent) {
 
 async function updateBtc() {
   try {
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true');
-    const data = await res.json();
-    const ethPrice = data.ethereum.usd;
-    const ethChange = data.ethereum.usd_24h_change;
-    const ethUp = ethChange >= 0;
-    setTicker('eth', `ETH/USD  $${ethPrice.toLocaleString(undefined, {maximumFractionDigits: 0})} ${ethUp ? '▲' : '▼'} ${ethUp ? '+' : ''}${ethChange.toFixed(2)}%`, ethUp);
-    setDashCard('eth', 'Ethereum', `$${ethPrice.toLocaleString(undefined, {maximumFractionDigits: 0})}`, ethChange);
-  } catch (err) {
-    console.error('ETH price fetch failed:', err);
-  }
-}
-
-async function updateBtcTicker() {
-  // On pages with the live chart (homepage), that fetch already supplies BTC
-  // price/change — skip this duplicate call to stay within API rate limits.
-  if (document.getElementById('btc-chart')) return;
-  try {
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
     const data = await res.json();
     const btcPrice = data.bitcoin.usd;
     const btcChange = data.bitcoin.usd_24h_change;
     const btcUp = btcChange >= 0;
     setTicker('btc', `BTC/USD  $${btcPrice.toLocaleString(undefined, {maximumFractionDigits: 0})} ${btcUp ? '▲' : '▼'} ${btcUp ? '+' : ''}${btcChange.toFixed(2)}%`, btcUp);
     setDashCard('btc', 'Bitcoin', `$${btcPrice.toLocaleString(undefined, {maximumFractionDigits: 0})}`, btcChange);
+
+    const ethPrice = data.ethereum.usd;
+    const ethChange = data.ethereum.usd_24h_change;
+    const ethUp = ethChange >= 0;
+    setTicker('eth', `ETH/USD  $${ethPrice.toLocaleString(undefined, {maximumFractionDigits: 0})} ${ethUp ? '▲' : '▼'} ${ethUp ? '+' : ''}${ethChange.toFixed(2)}%`, ethUp);
+    setDashCard('eth', 'Ethereum', `$${ethPrice.toLocaleString(undefined, {maximumFractionDigits: 0})}`, ethChange);
   } catch (err) {
-    console.error('BTC price fetch failed:', err);
+    console.error('BTC/ETH price fetch failed:', err);
   }
 }
 
@@ -194,7 +183,6 @@ function updateNasdaq() {
 
 function refreshTicker() {
   updateBtc();
-  updateBtcTicker();
   updateGold();
   updateEurUsd();
   updateSp500();
@@ -231,12 +219,6 @@ async function updateBtcChart() {
 
     const isUp = values[values.length - 1] >= values[0];
     const lineColor = isUp ? '#1A9B5E' : '#C0392B';
-
-    // Feed the same real data into the ticker and dashboard card (no extra API call)
-    const latestPrice = values[values.length - 1];
-    const btcChangePct = ((values[values.length - 1] - values[0]) / values[0]) * 100;
-    setTicker('btc', `BTC/USD  $${latestPrice.toLocaleString(undefined, {maximumFractionDigits: 0})} ${isUp ? '▲' : '▼'} ${isUp ? '+' : ''}${btcChangePct.toFixed(2)}%`, isUp);
-    setDashCard('btc', 'Bitcoin', `$${latestPrice.toLocaleString(undefined, {maximumFractionDigits: 0})}`, btcChangePct);
 
     if (btcChartInstance) {
       btcChartInstance.data.labels = labels;
