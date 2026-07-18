@@ -36,7 +36,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
   font-family: var(--ff-body);
@@ -44,7 +44,6 @@ body {
   background: var(--white);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   max-width: 100vw;
 }
 
@@ -338,7 +337,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 /* Stale-data indicator — a failed refresh should never be silent.
    Dims the value and adds a small warning dot; the title="" attribute
    (set in script.js) supplies the tooltip explanation. */
-.is-stale { opacity: 0.55; cursor: help; position: relative; }
+.is-stale { opacity: 0.55; position: relative; }
 .is-stale::after {
   content: '⚠';
   font-size: 0.7em;
