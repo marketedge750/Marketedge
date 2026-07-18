@@ -1,5 +1,5 @@
 // ===========================
-// MARKETEDGE — SCRIPTS
+// FINTORRA — SCRIPTS
 // ===========================
 
 // ===========================
@@ -16,16 +16,71 @@ function setTicker(symbol, text, isUp) {
     el.classList.remove('up', 'down');
     el.classList.add(isUp ? 'up' : 'down');
   });
+  markFresh(symbol);
 }
+
+// ===========================
+// STALE-DATA TRACKING
+// A visitor should never silently see minutes/hours-old prices with no
+// indication anything is wrong. We track the last successful update per
+// symbol and flag the UI once data hasn't refreshed for 2+ cycles (>=150s).
+// ===========================
+const lastUpdated = {};
+const STALE_AFTER_MS = 150000; // 2.5 refresh cycles at 60s
+
+function markFresh(symbol) {
+  lastUpdated[symbol] = Date.now();
+  document.querySelectorAll(`[data-symbol="${symbol}"]`).forEach(el => {
+    el.classList.remove('is-stale');
+    el.removeAttribute('title');
+  });
+}
+
+function markStale(symbol, label) {
+  document.querySelectorAll(`[data-symbol="${symbol}"]`).forEach(el => {
+    el.classList.add('is-stale');
+    el.setAttribute('title', `${label || symbol}: live update failed — showing last known price.`);
+  });
+}
+
+function checkStaleness() {
+  const now = Date.now();
+  Object.keys(lastUpdated).forEach(symbol => {
+    if (now - lastUpdated[symbol] > STALE_AFTER_MS) {
+      markStale(symbol);
+    }
+  });
+}
+setInterval(checkStaleness, 30000);
 
 function sparklinePoints(changePercent) {
   const isUp = changePercent >= 0;
-  const amp = Math.min(Math.abs(changePercent) * 3, 16);
-  const base = isUp
-    ? [[0, 22], [20, 20], [40, 17], [60, 14], [80, 10]]
-    : [[0, 8], [20, 10], [40, 13], [60, 16], [80, 20]];
-  const endY = isUp ? Math.max(2, 10 - amp) : Math.min(28, 20 + amp);
-  return [...base, [100, endY]].map(p => p.join(',')).join(' ');
+  const totalPoints = 24;
+  const width = 100;
+  const midY = 15;
+  const amp = Math.min(Math.abs(changePercent) * 2.2, 11);
+  const trend = isUp ? -amp : amp; // SVG y grows downward, so "up" means decreasing y
+  const startOffset = isUp ? 5 : -5;
+
+  // Deterministic pseudo-random noise seeded from the change value,
+  // so the shape stays stable between re-renders of the same data point.
+  let seed = Math.abs(Math.round(changePercent * 1000)) || 7;
+  function rand() {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  }
+
+  const pts = [];
+  for (let i = 0; i <= totalPoints; i++) {
+    const progress = i / totalPoints;
+    const x = width * progress;
+    const target = midY + startOffset + trend * progress;
+    const noise = (rand() - 0.5) * 5.5;
+    let y = target + noise;
+    y = Math.max(2, Math.min(28, y));
+    pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  return pts.join(' ');
 }
 
 function updateTopMover() {
@@ -83,6 +138,8 @@ async function updateBtc() {
     setDashCard('eth', 'Ethereum', `$${ethPrice.toLocaleString(undefined, {maximumFractionDigits: 0})}`, ethChange);
   } catch (err) {
     console.error('BTC/ETH price fetch failed:', err);
+    markStale('btc', 'Bitcoin');
+    markStale('eth', 'Ethereum');
   }
 }
 
@@ -105,6 +162,7 @@ async function updateGold() {
     setDashCard('gold', 'Gold', `$${price.toLocaleString(undefined, {maximumFractionDigits: 0})}`, change);
   } catch (err) {
     console.error('Gold price fetch failed:', err);
+    markStale('gold', 'Gold');
   }
 }
 
@@ -127,18 +185,26 @@ async function updateEurUsd() {
     setDashCard('eurusd', 'EUR/USD', rate.toFixed(4), change);
   } catch (err) {
     console.error('EUR/USD fetch failed:', err);
+    markStale('eurusd', 'EUR/USD');
   }
 }
 
-// Twelve Data API key (free tier: 800 calls/day, 8/min — plenty for a 60s refresh)
-const TWELVE_DATA_API_KEY = '0f98ad83d0f8483595a32eeb13bf45fa';
-
+// ===========================
+// S&P 500 / NASDAQ — via a Netlify Function proxy, NOT a direct client call.
+// The Twelve Data API key lives server-side only (Netlify env var
+// TWELVE_DATA_API_KEY), never shipped to the browser. See
+// netlify/functions/quote.js. This also means the free-tier quota (800
+// calls/day) is shared efficiently across all visitors from one server-side
+// cache instead of being burned per-visitor and scrapable from view-source.
+// ===========================
 async function updateIndex(symbol, tickerKey, label) {
   try {
-    const res = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${TWELVE_DATA_API_KEY}`);
+    const res = await fetch(`/.netlify/functions/quote?symbol=${symbol}`);
+    if (!res.ok) throw new Error(`Proxy returned ${res.status}`);
     const data = await res.json();
-    if (data.status === 'error' || !data.close) {
-      console.error(`Twelve Data error for ${symbol}:`, data.message || data);
+    if (data.error || !data.close) {
+      console.error(`Quote proxy error for ${symbol}:`, data.error || data);
+      markStale(tickerKey, label);
       return;
     }
     const price = parseFloat(data.close);
@@ -150,6 +216,7 @@ async function updateIndex(symbol, tickerKey, label) {
     setDashCard(tickerKey, label, price.toLocaleString(undefined, {maximumFractionDigits: 0}), change);
   } catch (err) {
     console.error(`${label} fetch failed:`, err);
+    markStale(tickerKey, label);
   }
 }
 
@@ -176,34 +243,167 @@ if (document.querySelector('.market-strip')) {
   setInterval(refreshTicker, 60000); // refresh every 60 seconds
 }
 
-// FAQ accordion
-function toggleFaq(btn) {
-  const answer = btn.nextElementSibling;
-  const isOpen = btn.classList.contains('open');
+// ===========================
+// LIVE BTC CHART (real 24h history from CoinGecko, via Chart.js)
+// ===========================
+let btcChartInstance = null;
 
-  // close all
-  document.querySelectorAll('.faq-q').forEach(q => {
-    q.classList.remove('open');
-    q.nextElementSibling.classList.remove('open');
-  });
+async function updateBtcChart() {
+  const canvas = document.getElementById('btc-chart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  try {
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1');
+    const data = await res.json();
+    const prices = data.prices; // [[timestamp, price], ...]
+    const labels = prices.map(p => new Date(p[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    const values = prices.map(p => p[1]);
 
-  if (!isOpen) {
-    btn.classList.add('open');
-    answer.classList.add('open');
+    const priceBadge = document.getElementById('chart-price');
+    if (priceBadge) {
+      const latest = values[values.length - 1];
+      priceBadge.textContent = `$${latest.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+    }
+
+    const isUp = values[values.length - 1] >= values[0];
+    const lineColor = isUp ? '#1A9B5E' : '#C0392B';
+
+    if (btcChartInstance) {
+      btcChartInstance.data.labels = labels;
+      btcChartInstance.data.datasets[0].data = values;
+      btcChartInstance.data.datasets[0].borderColor = lineColor;
+      btcChartInstance.update('none');
+      return;
+    }
+
+    btcChartInstance = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          borderColor: lineColor,
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.15,
+          fill: true,
+          backgroundColor: (ctx) => {
+            const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
+            gradient.addColorStop(0, 'rgba(15,163,177,0.15)');
+            gradient.addColorStop(1, 'rgba(15,163,177,0)');
+            return gradient;
+          },
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 6, color: '#7A8394', font: { size: 10 } }, grid: { display: false } },
+          y: { ticks: { color: '#7A8394', font: { size: 10 }, callback: v => '$' + v.toLocaleString() }, grid: { color: 'rgba(122,131,148,0.12)' } },
+        },
+      },
+    });
+  } catch (err) {
+    console.error('BTC chart fetch failed:', err);
   }
 }
 
-// Newsletter submit
-function handleSubscribe(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button');
-  const input = e.target.querySelector('input');
-  btn.textContent = '✓ You\'re in!';
-  btn.style.background = '#1A9B5E';
-  input.value = '';
-  input.disabled = true;
-  btn.disabled = true;
+if (document.getElementById('btc-chart')) {
+  updateBtcChart();
+  setInterval(updateBtcChart, 60000);
 }
+
+// FAQ accordion — event-delegated (no inline onclick=""), and announces
+// open/closed state to screen readers via aria-expanded.
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.setAttribute('aria-expanded', 'false');
+  btn.addEventListener('click', () => {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.classList.remove('open');
+      q.setAttribute('aria-expanded', 'false');
+      q.nextElementSibling.classList.remove('open');
+    });
+
+    if (!isOpen) {
+      btn.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      answer.classList.add('open');
+    }
+  });
+});
+
+// Newsletter submit
+// TODO: netlify/functions/subscribe.js is a stub — wire it to your real ESP
+// (Mailchimp, ConvertKit, Buttondown, etc.) using their API + an env-var
+// API key, the same pattern as netlify/functions/quote.js. Until that's
+// done this will fail quietly server-side and the emails are NOT captured
+// anywhere — do not treat this as production-ready.
+async function handleSubscribe(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button');
+  const input = form.querySelector('input');
+  const email = input.value;
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Subscribing…';
+  try {
+    const res = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (!res.ok) throw new Error(`Subscribe endpoint returned ${res.status}`);
+    btn.textContent = '✓ You\'re in!';
+    btn.style.background = '#1A9B5E';
+    input.value = '';
+    input.disabled = true;
+  } catch (err) {
+    console.error('Newsletter subscribe failed:', err);
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+    const note = form.querySelector('.subscribe-error') || document.createElement('p');
+    note.className = 'subscribe-error';
+    note.textContent = 'Something went wrong — please try again in a moment.';
+    if (!form.querySelector('.subscribe-error')) form.appendChild(note);
+  }
+}
+
+// Dark/light theme toggle (preference saved in localStorage)
+(function () {
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const saved = localStorage.getItem('fintorra-theme') || (systemPrefersDark ? 'dark' : 'light');
+
+  function applyTheme(theme) {
+    const sunSVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    const moonSVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+      if (toggleBtn) toggleBtn.innerHTML = sunSVG;
+    } else {
+      root.removeAttribute('data-theme');
+      if (toggleBtn) toggleBtn.innerHTML = moonSVG;
+    }
+  }
+
+  applyTheme(saved === 'dark' ? 'dark' : 'light');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('fintorra-theme', next);
+    });
+  }
+})();
 
 // Mobile hamburger (simple toggle)
 const hamburger = document.getElementById('hamburger');

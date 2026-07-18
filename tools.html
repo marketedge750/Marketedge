@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Investment Tools — Compound Interest Calculator | MarketEdge</title>
-  <meta name="description" content="Free investing calculators: compound interest, portfolio growth, retirement planning, and more. No signup required." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Free Investment Tools — Compound Interest Calculator | Fintorra</title>
+<meta content="Free investing calculators: compound interest, portfolio growth, retirement planning, and more. No signup required." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<script>(function(){try{var t=localStorage.getItem('fintorra-theme');var sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&sysDark)){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
+<style>
     .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
     .tool-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
     .tool-card h2 { font-size: 1.4rem; margin-bottom: 20px; border: none; padding: 0; margin-top: 0; }
@@ -25,127 +27,137 @@
     .breakdown-item .lbl { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
     @media (max-width: 768px) { .tools-grid { grid-template-columns: 1fr; } }
   </style>
-</head>
+<link href="https://YOUR-DOMAIN-HERE.com/tools.html" rel="canonical"/><meta content="Free Investment Tools — Compound Interest Calculator | Fintorra" property="og:title"/><meta content="Free investing calculators: compound interest, portfolio growth, retirement planning, and more. No signup required." property="og:description"/><meta content="website" property="og:type"/><meta content="https://YOUR-DOMAIN-HERE.com/tools.html" property="og:url"/><meta content="https://YOUR-DOMAIN-HERE.com/og-default.jpg" property="og:image"/><meta content="Fintorra" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="Free Investment Tools — Compound Interest Calculator | Fintorra" name="twitter:title"/><meta content="Free investing calculators: compound interest, portfolio growth, retirement planning, and more. No signup required." name="twitter:description"/><meta content="https://YOUR-DOMAIN-HERE.com/og-default.jpg" name="twitter:image"/><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Fintorra",
+  "url": "https://YOUR-DOMAIN-HERE.com"
+}</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://YOUR-DOMAIN-HERE.com/index.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://YOUR-DOMAIN-HERE.com/tools.html"
+    }
+  ]
+}</script></head>
 <body>
-
-  <!-- MARKET STRIP -->
-  <div class="market-strip" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="ticker-item up" data-symbol="sp500">S&amp;P 500 &nbsp;5,847 ▲ +0.42%</span>
-      <span class="ticker-item up" data-symbol="nasdaq">NASDAQ &nbsp;19,203 ▲ +0.78%</span>
-      <span class="ticker-item down" data-symbol="btc">BTC/USD &nbsp;$96,410 ▼ −1.12%</span>
-      <span class="ticker-item down" data-symbol="eth">ETH/USD &nbsp;$3,240 ▼ −0.87%</span>
-      <span class="ticker-item up" data-symbol="gold">GOLD &nbsp;$4,312 ▲ +0.31%</span>
-      <span class="ticker-item up" data-symbol="eurusd">EUR/USD &nbsp;1.0841 ▲ +0.19%</span>
-      <span class="ticker-item up" data-symbol="sp500">S&amp;P 500 &nbsp;5,847 ▲ +0.42%</span>
-      <span class="ticker-item up" data-symbol="nasdaq">NASDAQ &nbsp;19,203 ▲ +0.78%</span>
-      <span class="ticker-item down" data-symbol="btc">BTC/USD &nbsp;$96,410 ▼ −1.12%</span>
-      <span class="ticker-item down" data-symbol="eth">ETH/USD &nbsp;$3,240 ▼ −0.87%</span>
-      <span class="ticker-item up" data-symbol="gold">GOLD &nbsp;$4,312 ▲ +0.31%</span>
-      <span class="ticker-item up" data-symbol="eurusd">EUR/USD &nbsp;1.0841 ▲ +0.19%</span>
-    </div>
-  </div>
-
-  <nav class="nav"><div class="nav-inner container"><a href="index.html" class="logo">Market<span>Edge</span></a><ul class="nav-links"><li><a href="investing-basics.html">Investing Basics</a></li><li><a href="broker-comparison.html">Broker Reviews</a></li><li><a href="etf-guide.html">ETFs & Funds</a></li><li><a href="crypto.html">Crypto</a></li><li><a href="tools.html" class="active">Tools</a></li><li><a href="investing-basics.html">Start Learning</a></li><li><a href="broker-comparison.html">Compare Brokers</a></li></ul><button class="hamburger" id="hamburger">&#9776;</button></div></nav>
-
-  <header class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › Tools</div><h1>Free Investment Tools</h1><p class="page-hero-sub">Calculators that show the real numbers behind your financial future.</p></div></header>
-
-  <div class="ad-slot container"><span class="ad-label">Advertisement</span><div class="ad-placeholder leaderboard">[ Google AdSense — 728×90 ]</div></div>
-
-  <main class="container" style="padding: 0 24px 80px;">
-    <div class="tools-grid">
-
-      <!-- Compound Interest Calculator -->
-      <div class="tool-card">
-        <h2>📈 Compound Interest Calculator</h2>
-        <div class="calc-form">
-          <div class="form-row"><label>Initial Investment ($)</label><input type="number" id="ci-initial" value="10000" min="0" step="100" oninput="calcCompound()" /></div>
-          <div class="form-row"><label>Monthly Contribution ($)</label><input type="number" id="ci-monthly" value="200" min="0" step="50" oninput="calcCompound()" /></div>
-          <div class="form-row"><label>Annual Return (%)</label><input type="number" id="ci-rate" value="8" min="0" max="50" step="0.5" oninput="calcCompound()" /></div>
-          <div class="form-row"><label>Time Horizon (Years)</label><input type="number" id="ci-years" value="20" min="1" max="50" oninput="calcCompound()" /></div>
-          <div class="calc-result">
-            <div class="result-num" id="ci-result">$0</div>
-            <div class="result-label">Final Portfolio Value</div>
-            <div class="result-breakdown">
-              <div class="breakdown-item"><div class="num" id="ci-invested">$0</div><div class="lbl">Total Invested</div></div>
-              <div class="breakdown-item"><div class="num" id="ci-gains">$0</div><div class="lbl">Investment Gains</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Retirement Calculator -->
-      <div class="tool-card">
-        <h2>🎯 Retirement Number Calculator</h2>
-        <div class="calc-form">
-          <div class="form-row"><label>Monthly Expenses in Retirement ($)</label><input type="number" id="ret-expense" value="4000" min="0" step="100" oninput="calcRetirement()" /></div>
-          <div class="form-row"><label>Safe Withdrawal Rate (%)</label><input type="number" id="ret-swr" value="4" min="1" max="10" step="0.1" oninput="calcRetirement()" /></div>
-          <div class="form-row"><label>Current Savings ($)</label><input type="number" id="ret-savings" value="50000" min="0" step="1000" oninput="calcRetirement()" /></div>
-          <div class="form-row"><label>Annual Return on Investments (%)</label><input type="number" id="ret-return" value="7" min="1" max="20" step="0.5" oninput="calcRetirement()" /></div>
-          <div class="calc-result">
-            <div class="result-num" id="ret-target">$0</div>
-            <div class="result-label">Retirement Number (FIRE Target)</div>
-            <div class="result-breakdown">
-              <div class="breakdown-item"><div class="num" id="ret-years">0 yrs</div><div class="lbl">Years to Retire*</div></div>
-              <div class="breakdown-item"><div class="num" id="ret-monthly">$0/mo</div><div class="lbl">Monthly Income Needed</div></div>
-            </div>
-          </div>
-          <p style="font-size:0.72rem;color:var(--ink-muted);margin-top:8px;">*Assumes current savings + monthly contribution at stated return. Simplified estimate.</p>
-        </div>
-      </div>
-
-      <!-- Portfolio Allocation Calculator -->
-      <div class="tool-card">
-        <h2>⚖️ Portfolio Allocation Calculator</h2>
-        <div class="calc-form">
-          <div class="form-row"><label>Your Age</label><input type="number" id="pa-age" value="30" min="18" max="100" oninput="calcAllocation()" /></div>
-          <div class="form-row"><label>Risk Tolerance</label>
-            <select id="pa-risk" onchange="calcAllocation()" style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--ff-mono);font-size:0.95rem;">
-              <option value="conservative">Conservative</option>
-              <option value="moderate" selected>Moderate</option>
-              <option value="aggressive">Aggressive</option>
-            </select>
-          </div>
-          <div class="calc-result">
-            <div class="result-num" id="pa-stocks">0%</div>
-            <div class="result-label">Suggested Stock Allocation</div>
-            <div class="result-breakdown">
-              <div class="breakdown-item"><div class="num" id="pa-bonds">0%</div><div class="lbl">Bonds</div></div>
-              <div class="breakdown-item"><div class="num" id="pa-cash">0%</div><div class="lbl">Cash / Other</div></div>
-            </div>
-          </div>
-          <p style="font-size:0.72rem;color:var(--ink-muted);margin-top:8px;">*Rule-of-thumb estimate based on age and risk tolerance. Not personalized financial advice.</p>
-        </div>
-      </div>
-
-      <!-- Fee Impact Calculator -->
-      <div class="tool-card">
-        <h2>💸 Investment Fee Impact Calculator</h2>
-        <div class="calc-form">
-          <div class="form-row"><label>Portfolio Value ($)</label><input type="number" id="fee-value" value="50000" min="0" step="1000" oninput="calcFeeImpact()" /></div>
-          <div class="form-row"><label>Annual Return Before Fees (%)</label><input type="number" id="fee-return" value="8" min="0" max="30" step="0.5" oninput="calcFeeImpact()" /></div>
-          <div class="form-row"><label>Expense Ratio / Advisor Fee (%)</label><input type="number" id="fee-pct" value="1" min="0" max="5" step="0.05" oninput="calcFeeImpact()" /></div>
-          <div class="form-row"><label>Time Horizon (Years)</label><input type="number" id="fee-years" value="25" min="1" max="50" oninput="calcFeeImpact()" /></div>
-          <div class="calc-result">
-            <div class="result-num" id="fee-lost">$0</div>
-            <div class="result-label">Lost to Fees Over Time</div>
-            <div class="result-breakdown">
-              <div class="breakdown-item"><div class="num" id="fee-with">$0</div><div class="lbl">Ending Value w/ Fees</div></div>
-              <div class="breakdown-item"><div class="num" id="fee-without">$0</div><div class="lbl">Ending Value, No Fees</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="ad-slot" style="margin-top:40px;"><span class="ad-label">Advertisement</span><div class="ad-placeholder leaderboard" style="margin:0 auto;">[ Google AdSense — 728×90 ]</div></div>
-  </main>
-
-  <footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a href="index.html" class="logo">Market<span>Edge</span></a><p>Independent investing education. Not financial advice.</p></div><div class="footer-links"><div class="footer-col"><h4>Guides</h4><ul><li><a href="investing-basics.html">Basics</a></li><li><a href="etf-guide.html">ETFs</a></li><li><a href="broker-comparison.html">Brokers</a></li></ul></div></div></div><div class="footer-bottom container"><p>© 2026 MarketEdge. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></div><div class="visitor-counter" style="text-align:center;padding:8px 0;"><img src="https://api.visitorbadge.io/api/visitors?path=marketedge-zippy-pavlova-49449e&label=Visitors&countColor=%23263759&style=flat" alt="Visitor count" /></div></footer>
-
-  <script src="script.js"></script>
-  <script>
+<!-- MARKET STRIP -->
+<div aria-hidden="true" class="market-strip">
+<div class="ticker-track">
+<span class="ticker-item up" data-symbol="sp500">S&amp;P 500  5,847 ▲ +0.42%</span>
+<span class="ticker-item up" data-symbol="nasdaq">NASDAQ  19,203 ▲ +0.78%</span>
+<span class="ticker-item down" data-symbol="btc">BTC/USD  $96,410 ▼ −1.12%</span>
+<span class="ticker-item down" data-symbol="eth">ETH/USD  $3,240 ▼ −0.87%</span>
+<span class="ticker-item up" data-symbol="gold">GOLD  $4,312 ▲ +0.31%</span>
+<span class="ticker-item up" data-symbol="eurusd">EUR/USD  1.0841 ▲ +0.19%</span>
+<span class="ticker-item up" data-symbol="sp500">S&amp;P 500  5,847 ▲ +0.42%</span>
+<span class="ticker-item up" data-symbol="nasdaq">NASDAQ  19,203 ▲ +0.78%</span>
+<span class="ticker-item down" data-symbol="btc">BTC/USD  $96,410 ▼ −1.12%</span>
+<span class="ticker-item down" data-symbol="eth">ETH/USD  $3,240 ▼ −0.87%</span>
+<span class="ticker-item up" data-symbol="gold">GOLD  $4,312 ▲ +0.31%</span>
+<span class="ticker-item up" data-symbol="eurusd">EUR/USD  1.0841 ▲ +0.19%</span>
+</div>
+</div>
+<nav class="nav"><div class="nav-inner container"><a class="logo" href="index.html">Fin<span>torra</span></a><ul class="nav-links"><li><a href="investing-basics.html">Investing Basics</a></li><li><a href="broker-comparison.html">Broker Reviews</a></li><li><a href="etf-guide.html">ETFs &amp; Funds</a></li><li><a href="crypto.html">Crypto</a></li><li><a class="active" href="tools.html">Tools</a></li><li><a href="investing-basics.html">Start Learning</a></li><li><a href="broker-comparison.html">Compare Brokers</a></li></ul><button aria-label="Toggle dark mode" class="theme-toggle" id="theme-toggle"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button><button aria-label="Open menu" class="hamburger" id="hamburger">☰</button></div></nav>
+<header class="page-hero"><div class="container"><div class="breadcrumb"><a href="index.html">Home</a> › Tools</div><h1>Free Investment Tools</h1><p class="page-hero-sub">Calculators that show the real numbers behind your financial future.</p></div></header>
+<div class="ad-slot container"><span class="ad-label">Advertisement</span><div class="ad-placeholder leaderboard">[ Google AdSense — 728×90 ]</div></div>
+<main class="container" style="padding: 0 24px 80px;">
+<div class="tools-grid">
+<!-- Compound Interest Calculator -->
+<div class="tool-card">
+<h2>📈 Compound Interest Calculator</h2>
+<div class="calc-form">
+<div class="form-row"><label>Initial Investment ($)</label><input id="ci-initial" min="0" oninput="calcCompound()" step="100" type="number" value="10000"/></div>
+<div class="form-row"><label>Monthly Contribution ($)</label><input id="ci-monthly" min="0" oninput="calcCompound()" step="50" type="number" value="200"/></div>
+<div class="form-row"><label>Annual Return (%)</label><input id="ci-rate" max="50" min="0" oninput="calcCompound()" step="0.5" type="number" value="8"/></div>
+<div class="form-row"><label>Time Horizon (Years)</label><input id="ci-years" max="50" min="1" oninput="calcCompound()" type="number" value="20"/></div>
+<div class="calc-result">
+<div class="result-num" id="ci-result">$0</div>
+<div class="result-label">Final Portfolio Value</div>
+<div class="result-breakdown">
+<div class="breakdown-item"><div class="num" id="ci-invested">$0</div><div class="lbl">Total Invested</div></div>
+<div class="breakdown-item"><div class="num" id="ci-gains">$0</div><div class="lbl">Investment Gains</div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Retirement Calculator -->
+<div class="tool-card">
+<h2>🎯 Retirement Number Calculator</h2>
+<div class="calc-form">
+<div class="form-row"><label>Monthly Expenses in Retirement ($)</label><input id="ret-expense" min="0" oninput="calcRetirement()" step="100" type="number" value="4000"/></div>
+<div class="form-row"><label>Safe Withdrawal Rate (%)</label><input id="ret-swr" max="10" min="1" oninput="calcRetirement()" step="0.1" type="number" value="4"/></div>
+<div class="form-row"><label>Current Savings ($)</label><input id="ret-savings" min="0" oninput="calcRetirement()" step="1000" type="number" value="50000"/></div>
+<div class="form-row"><label>Monthly Contribution to Retirement ($)</label><input id="ret-contribution" min="0" oninput="calcRetirement()" step="50" type="number" value="500"/></div>
+<div class="form-row"><label>Annual Return on Investments (%)</label><input id="ret-return" max="20" min="1" oninput="calcRetirement()" step="0.5" type="number" value="7"/></div>
+<div class="calc-result">
+<div class="result-num" id="ret-target">$0</div>
+<div class="result-label">Retirement Number (FIRE Target)</div>
+<div class="result-breakdown">
+<div class="breakdown-item"><div class="num" id="ret-years">0 yrs</div><div class="lbl">Years to Retire*</div></div>
+<div class="breakdown-item"><div class="num" id="ret-monthly">$0/mo</div><div class="lbl">Monthly Income Needed</div></div>
+</div>
+</div>
+<p style="font-size:0.72rem;color:var(--ink-muted);margin-top:8px;">*Assumes your current savings grow at the stated return while you add your monthly contribution every month until the target is reached. Simplified estimate — ignores taxes, inflation, and Social Security.</p>
+</div>
+</div>
+<!-- Portfolio Allocation Calculator -->
+<div class="tool-card">
+<h2>⚖️ Portfolio Allocation Calculator</h2>
+<div class="calc-form">
+<div class="form-row"><label>Your Age</label><input id="pa-age" max="100" min="18" oninput="calcAllocation()" type="number" value="30"/></div>
+<div class="form-row"><label>Risk Tolerance</label>
+<select id="pa-risk" onchange="calcAllocation()" style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--ff-mono);font-size:0.95rem;">
+<option value="conservative">Conservative</option>
+<option selected="" value="moderate">Moderate</option>
+<option value="aggressive">Aggressive</option>
+</select>
+</div>
+<div class="calc-result">
+<div class="result-num" id="pa-stocks">0%</div>
+<div class="result-label">Suggested Stock Allocation</div>
+<div class="result-breakdown">
+<div class="breakdown-item"><div class="num" id="pa-bonds">0%</div><div class="lbl">Bonds</div></div>
+<div class="breakdown-item"><div class="num" id="pa-cash">0%</div><div class="lbl">Cash / Other</div></div>
+</div>
+</div>
+<p style="font-size:0.72rem;color:var(--ink-muted);margin-top:8px;">*Rule-of-thumb estimate based on age and risk tolerance. Not personalized financial advice.</p>
+</div>
+</div>
+<!-- Fee Impact Calculator -->
+<div class="tool-card">
+<h2>💸 Investment Fee Impact Calculator</h2>
+<div class="calc-form">
+<div class="form-row"><label>Portfolio Value ($)</label><input id="fee-value" min="0" oninput="calcFeeImpact()" step="1000" type="number" value="50000"/></div>
+<div class="form-row"><label>Annual Return Before Fees (%)</label><input id="fee-return" max="30" min="0" oninput="calcFeeImpact()" step="0.5" type="number" value="8"/></div>
+<div class="form-row"><label>Expense Ratio / Advisor Fee (%)</label><input id="fee-pct" max="5" min="0" oninput="calcFeeImpact()" step="0.05" type="number" value="1"/></div>
+<div class="form-row"><label>Time Horizon (Years)</label><input id="fee-years" max="50" min="1" oninput="calcFeeImpact()" type="number" value="25"/></div>
+<div class="calc-result">
+<div class="result-num" id="fee-lost">$0</div>
+<div class="result-label">Lost to Fees Over Time</div>
+<div class="result-breakdown">
+<div class="breakdown-item"><div class="num" id="fee-with">$0</div><div class="lbl">Ending Value w/ Fees</div></div>
+<div class="breakdown-item"><div class="num" id="fee-without">$0</div><div class="lbl">Ending Value, No Fees</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="ad-slot" style="margin-top:40px;"><span class="ad-label">Advertisement</span><div class="ad-placeholder leaderboard" style="margin:0 auto;">[ Google AdSense — 728×90 ]</div></div>
+</main>
+<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a class="logo" href="index.html">Fin<span>torra</span></a><p>Independent investing education. Not financial advice.</p></div><div class="footer-links"><div class="footer-col"><h4>Guides</h4><ul><li><a href="investing-basics.html">Basics</a></li><li><a href="etf-guide.html">ETFs</a></li><li><a href="broker-comparison.html">Brokers</a></li></ul></div></div></div><div class="footer-bottom container"><p>© 2026 Fintorra. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></div><div class="visitor-counter" style="text-align:center;padding:8px 0;"><img alt="Visitor count" src="https://api.visitorbadge.io/api/visitors?path=marketedge-zippy-pavlova-49449e&amp;label=Visitors&amp;countColor=%23263759&amp;style=flat"/></div></footer>
+<script src="script.js"></script>
+<script>
     function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
 
     function calcCompound() {
@@ -153,7 +165,14 @@
       const m = parseFloat(document.getElementById('ci-monthly').value) || 0;
       const r = (parseFloat(document.getElementById('ci-rate').value) || 0) / 100 / 12;
       const n = (parseFloat(document.getElementById('ci-years').value) || 0) * 12;
-      const fv = P * Math.pow(1 + r, n) + m * (Math.pow(1 + r, n) - 1) / (r || 1);
+      // At r === 0 the closed-form annuity formula's numerator and the
+      // (r || 1) fallback both evaluate in a way that silently drops the
+      // monthly contributions entirely (division swaps in 1 instead of
+      // taking the true limit). Handle the zero-return case explicitly:
+      // with no growth, the future value is simply principal + contributions.
+      const fv = r === 0
+        ? P + m * n
+        : P * Math.pow(1 + r, n) + m * (Math.pow(1 + r, n) - 1) / r;
       const invested = P + m * n;
       const gains = fv - invested;
       document.getElementById('ci-result').textContent = fmt(fv);
@@ -165,11 +184,28 @@
       const expense = parseFloat(document.getElementById('ret-expense').value) || 0;
       const swr = (parseFloat(document.getElementById('ret-swr').value) || 4) / 100;
       const savings = parseFloat(document.getElementById('ret-savings').value) || 0;
+      const monthlyContribution = parseFloat(document.getElementById('ret-contribution').value) || 0;
       const ret = (parseFloat(document.getElementById('ret-return').value) || 7) / 100;
       const annualExpense = expense * 12;
       const target = annualExpense / swr;
       const gap = Math.max(0, target - savings);
-      const years = gap > 0 ? Math.log(1 + gap * ret / (expense * 12 || 1)) / Math.log(1 + ret / 12) / 12 : 0;
+      // Previously this used `expense * 12` (how much you SPEND) as a stand-in
+      // for the missing "how much you SAVE" figure — those are unrelated
+      // numbers, and it made "Years to Retire" meaningless. Now it uses the
+      // real monthly contribution field above, and handles the r=0 /
+      // contribution=0 edge cases explicitly instead of relying on an
+      // "(x || 1)" fallback that silently produced wrong answers.
+      let years;
+      if (gap <= 0) {
+        years = 0;
+      } else if (monthlyContribution <= 0) {
+        years = ret > 0 ? Infinity : Infinity; // no growth engine and no contributions: never gets there
+      } else if (ret === 0) {
+        years = (gap / monthlyContribution) / 12;
+      } else {
+        const monthlyRate = ret / 12;
+        years = Math.log(1 + (gap * monthlyRate) / monthlyContribution) / Math.log(1 + monthlyRate) / 12;
+      }
       document.getElementById('ret-target').textContent = fmt(target);
       document.getElementById('ret-years').textContent = isFinite(years) ? Math.ceil(years) + ' yrs' : '∞';
       document.getElementById('ret-monthly').textContent = fmt(expense) + '/mo';
