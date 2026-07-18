@@ -1111,6 +1111,14 @@ html[data-theme="dark"] {
   --ink-muted: #8B93A1;
   --surface: #161B22;
   --border: #30363D;
+  /* The base --accent (#1A5F7A, a deep teal) measures only ~2.4:1
+     contrast against dark card backgrounds — well under the 4.5:1
+     legibility floor, and the root cause of hard-to-read links
+     throughout article pages (quick-nav links, "Read more" links, etc.)
+     reported after the dark-mode fixes above. --accent-hi (#0FA3B1) was
+     already chosen specifically to work on dark backgrounds, so reuse it
+     here instead of introducing a third color. */
+  --accent: var(--accent-hi);
 }
 html[data-theme="dark"] body { background: #0D1117; color: #E6EDF3; }
 html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3,
@@ -1193,3 +1201,4 @@ html[data-theme="dark"] .range-btn { background: #161B22; border-color: #30363D;
 html[data-theme="dark"] .faq-q { color: #E6EDF3; }
 html[data-theme="dark"] .fact strong { color: #E6EDF3; }
 html[data-theme="dark"] .pick-info strong { color: #E6EDF3; }
+html[data-theme="dark"] .quick-nav strong { color: #E6EDF3; }
