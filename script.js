@@ -53,6 +53,119 @@ function checkStaleness() {
 }
 setInterval(checkStaleness, 30000);
 
+// ===========================
+// "Updated Xs ago" labels (Bloomberg-style timestamp next to each figure)
+// Ticks independently of the 60s fetch cycle so the number climbs
+// smoothly (1s ago, 2s ago...) instead of jumping in 60s steps.
+// ===========================
+function formatAgo(ms) {
+  const s = Math.floor(ms / 1000);
+  if (s < 5) return 'just now';
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  return `${h}h ago`;
+}
+function renderUpdatedLabels() {
+  document.querySelectorAll('[data-updated]').forEach(el => {
+    const symbol = el.getAttribute('data-updated');
+    const ts = lastUpdated[symbol];
+    el.textContent = ts ? `Updated ${formatAgo(Date.now() - ts)}` : 'Updating…';
+  });
+}
+setInterval(renderUpdatedLabels, 1000);
+
+// ===========================
+// Watchlist (item 3) — a starred symbol persists across visits via
+// localStorage; no account/backend needed for a client-only feature.
+// ===========================
+const WATCHLIST_KEY = 'fintorra-watchlist';
+function getWatchlist() {
+  try { return JSON.parse(localStorage.getItem(WATCHLIST_KEY)) || []; }
+  catch (e) { return []; }
+}
+function setWatchlist(list) {
+  try { localStorage.setItem(WATCHLIST_KEY, JSON.stringify(list)); } catch (e) {}
+}
+function applyWatchlistState() {
+  const list = getWatchlist();
+  document.querySelectorAll('.watch-star').forEach(btn => {
+    const symbol = btn.getAttribute('data-watch');
+    const isWatched = list.includes(symbol);
+    btn.classList.toggle('is-watched', isWatched);
+    btn.setAttribute('aria-pressed', String(isWatched));
+    btn.textContent = isWatched ? '★' : '☆';
+    const card = btn.closest('.dash-card');
+    if (card) card.classList.toggle('is-watched', isWatched);
+  });
+}
+document.querySelectorAll('.watch-star').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const symbol = btn.getAttribute('data-watch');
+    const list = getWatchlist();
+    const idx = list.indexOf(symbol);
+    if (idx === -1) list.push(symbol); else list.splice(idx, 1);
+    setWatchlist(list);
+    applyWatchlistState();
+  });
+});
+applyWatchlistState();
+
+// ===========================
+// Clickable in-article ticker mentions (item 5) — e.g. "VTI" inside a
+// guide's body text. Reuses the same data/quotes.json payload already
+// fetched for the S&P 500/NASDAQ cards (see updateIndices above), so
+// this adds no extra network requests.
+// ===========================
+let activePopover = null;
+function closeTickerPopover() {
+  if (activePopover) { activePopover.remove(); activePopover = null; }
+}
+function showTickerPopover(anchorEl, key) {
+  closeTickerPopover();
+  const entry = latestQuotes && latestQuotes[key];
+  const pop = document.createElement('div');
+  pop.className = 'ticker-popover';
+  if (!entry) {
+    pop.innerHTML = `<div class="ticker-popover-label">Price unavailable right now</div>`;
+  } else {
+    const isUp = entry.change >= 0;
+    const arrow = isUp ? '▲' : '▼';
+    const sign = isUp ? '+' : '';
+    pop.innerHTML = `
+      <div class="ticker-popover-label">${entry.label}</div>
+      <div class="ticker-popover-price">$${entry.price.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
+      <div class="ticker-popover-change ${isUp ? 'up' : 'down'}">${arrow} ${sign}${entry.change.toFixed(2)}%</div>
+    `;
+  }
+  document.body.appendChild(pop);
+  const rect = anchorEl.getBoundingClientRect();
+  pop.style.left = `${rect.left + window.scrollX}px`;
+  pop.style.top = `${rect.bottom + window.scrollY + 6}px`;
+  activePopover = pop;
+}
+function refreshTickerMentionPopovers() {
+  // Re-render an open popover in place if new data just arrived, so it
+  // doesn't show a stale number if left open across a refresh cycle.
+  if (activePopover && activePopover.dataset.forKey) {
+    const anchor = document.querySelector(`.ticker-mention[data-ticker="${activePopover.dataset.forKey}"]`);
+    if (anchor) showTickerPopover(anchor, activePopover.dataset.forKey);
+  }
+}
+document.querySelectorAll('.ticker-mention').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const key = el.getAttribute('data-ticker');
+    if (activePopover && activePopover.dataset.forKey === key) { closeTickerPopover(); return; }
+    showTickerPopover(el, key);
+    activePopover.dataset.forKey = key;
+  });
+});
+document.addEventListener('click', (e) => {
+  if (activePopover && !e.target.closest('.ticker-mention')) closeTickerPopover();
+});
+
 function sparklinePoints(changePercent) {
   const isUp = changePercent >= 0;
   const totalPoints = 24;
@@ -200,12 +313,14 @@ async function updateEurUsd() {
 // which stay true 60-second live client-side calls to keyless APIs.
 // ===========================
 const QUOTES_MAX_AGE_MS = 45 * 60 * 1000; // 3x the 15-min schedule, allows for Action delays
+let latestQuotes = null; // cached for the in-article ETF ticker popovers (see popover section below)
 
 async function updateIndices() {
   try {
     const res = await fetch(`/data/quotes.json?_=${Date.now()}`); // cache-bust
     if (!res.ok) throw new Error(`quotes.json returned ${res.status}`);
     const data = await res.json();
+    latestQuotes = data;
 
     const isFresh = data.updatedAt && (Date.now() - new Date(data.updatedAt).getTime()) < QUOTES_MAX_AGE_MS;
 
@@ -220,6 +335,8 @@ async function updateIndices() {
       setDashCard(key, label, price.toLocaleString(undefined, {maximumFractionDigits: 0}), change);
       if (!isFresh) markStale(key, label); // file exists but the Action hasn't run recently
     });
+
+    refreshTickerMentionPopovers(isFresh);
   } catch (err) {
     console.error('Index quotes fetch failed:', err);
     markStale('sp500', 'S&P 500');
@@ -242,18 +359,31 @@ if (document.querySelector('.market-strip')) {
 }
 
 // ===========================
-// LIVE BTC CHART (real 24h history from CoinGecko, via Chart.js)
+// LIVE CRYPTO CHART (real history from CoinGecko, via Chart.js)
+// Generalized to any coin + range: click the Bitcoin or Ethereum card in
+// the dashboard above to load it here, and use the 1D/1W/1M/1Y buttons
+// to change the range — both reuse this same function and instance
+// instead of redrawing from scratch.
 // ===========================
-let btcChartInstance = null;
+let coinChartInstance = null;
+let currentCoin = { id: 'bitcoin', symbol: 'btc', label: 'Bitcoin' };
+let currentDays = 1;
+const RANGE_LABELS = { 1: 'Last 24 Hours', 7: 'Last 7 Days', 30: 'Last 30 Days', 365: 'Last Year' };
 
-async function updateBtcChart() {
+async function updateCoinChart() {
   const canvas = document.getElementById('btc-chart');
   if (!canvas || typeof Chart === 'undefined') return;
+  const titleEl = document.getElementById('chart-title');
+  if (titleEl) titleEl.textContent = `${currentCoin.label} — ${RANGE_LABELS[currentDays]}`;
+
   try {
-    const res = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1');
+    const res = await fetch(`https://api.coingecko.com/api/v3/coins/${currentCoin.id}/market_chart?vs_currency=usd&days=${currentDays}`);
     const data = await res.json();
     const prices = data.prices; // [[timestamp, price], ...]
-    const labels = prices.map(p => new Date(p[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    const useDateLabels = currentDays > 1;
+    const labels = prices.map(p => useDateLabels
+      ? new Date(p[0]).toLocaleDateString([], { month: 'short', day: 'numeric' })
+      : new Date(p[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     const values = prices.map(p => p[1]);
 
     const priceBadge = document.getElementById('chart-price');
@@ -265,15 +395,15 @@ async function updateBtcChart() {
     const isUp = values[values.length - 1] >= values[0];
     const lineColor = isUp ? '#1A9B5E' : '#C0392B';
 
-    if (btcChartInstance) {
-      btcChartInstance.data.labels = labels;
-      btcChartInstance.data.datasets[0].data = values;
-      btcChartInstance.data.datasets[0].borderColor = lineColor;
-      btcChartInstance.update('none');
+    if (coinChartInstance) {
+      coinChartInstance.data.labels = labels;
+      coinChartInstance.data.datasets[0].data = values;
+      coinChartInstance.data.datasets[0].borderColor = lineColor;
+      coinChartInstance.update('none');
       return;
     }
 
-    btcChartInstance = new Chart(canvas.getContext('2d'), {
+    coinChartInstance = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
         labels: labels,
@@ -304,13 +434,35 @@ async function updateBtcChart() {
       },
     });
   } catch (err) {
-    console.error('BTC chart fetch failed:', err);
+    console.error('Coin chart fetch failed:', err);
   }
 }
 
 if (document.getElementById('btc-chart')) {
-  updateBtcChart();
-  setInterval(updateBtcChart, 60000);
+  updateCoinChart();
+  setInterval(updateCoinChart, 60000);
+
+  document.querySelectorAll('.dash-card.is-chartable').forEach(card => {
+    card.addEventListener('click', () => {
+      currentCoin = {
+        id: card.getAttribute('data-coin-id'),
+        symbol: card.getAttribute('data-symbol'),
+        label: card.querySelector('.dash-label').textContent,
+      };
+      updateCoinChart();
+      document.querySelector('.live-chart-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+
+  document.querySelectorAll('.range-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentDays = parseInt(btn.getAttribute('data-days'), 10);
+      document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      coinChartInstance = null; // range change needs a fresh chart, not just data.update
+      updateCoinChart();
+    });
+  });
 }
 
 // FAQ accordion — event-delegated (no inline onclick=""), and announces

@@ -79,48 +79,54 @@
 <h2 class="section-title">Markets at a Glance</h2>
 <div class="pulse-grid">
 <div class="dash-card" data-symbol="sp500">
-<div class="dash-card-top"><span class="dash-label">S&amp;P 500</span><span class="dash-change up" data-change="">+0.42%</span></div>
+<div class="dash-card-top"><button aria-label="Add sp500 to watchlist" aria-pressed="false" class="watch-star" data-watch="sp500" type="button">☆</button><span class="dash-label">S&amp;P 500</span><span class="dash-change up" data-change="">+0.42%</span></div>
 <div class="dash-price" data-price="">5,847</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="up" data-spark="" points="0,22 20,20 40,17 60,14 80,10 100,4"></polyline></svg>
-</div>
+<span class="dash-updated" data-updated="sp500">Updating…</span></div>
 <div class="dash-card" data-symbol="nasdaq">
-<div class="dash-card-top"><span class="dash-label">NASDAQ</span><span class="dash-change up" data-change="">+0.78%</span></div>
+<div class="dash-card-top"><button aria-label="Add nasdaq to watchlist" aria-pressed="false" class="watch-star" data-watch="nasdaq" type="button">☆</button><span class="dash-label">NASDAQ</span><span class="dash-change up" data-change="">+0.78%</span></div>
 <div class="dash-price" data-price="">19,203</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="up" data-spark="" points="0,22 20,19 40,16 60,12 80,8 100,3"></polyline></svg>
-</div>
-<div class="dash-card" data-symbol="btc">
-<div class="dash-card-top"><span class="dash-label">Bitcoin</span><span class="dash-change down" data-change="">−1.12%</span></div>
+<span class="dash-updated" data-updated="nasdaq">Updating…</span></div>
+<div class="dash-card is-chartable" data-symbol="btc" data-coin-id="bitcoin">
+<div class="dash-card-top"><button aria-label="Add btc to watchlist" aria-pressed="false" class="watch-star" data-watch="btc" type="button">☆</button><span class="dash-label">Bitcoin</span><span class="dash-change down" data-change="">−1.12%</span></div>
 <div class="dash-price" data-price="">$96,410</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="down" data-spark="" points="0,8 20,10 40,13 60,16 80,20 100,24"></polyline></svg>
-</div>
-<div class="dash-card" data-symbol="eth">
-<div class="dash-card-top"><span class="dash-label">Ethereum</span><span class="dash-change down" data-change="">−0.87%</span></div>
+<span class="dash-updated" data-updated="btc">Updating…</span></div>
+<div class="dash-card is-chartable" data-symbol="eth" data-coin-id="ethereum">
+<div class="dash-card-top"><button aria-label="Add eth to watchlist" aria-pressed="false" class="watch-star" data-watch="eth" type="button">☆</button><span class="dash-label">Ethereum</span><span class="dash-change down" data-change="">−0.87%</span></div>
 <div class="dash-price" data-price="">$3,240</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="down" data-spark="" points="0,8 20,11 40,14 60,17 80,20 100,23"></polyline></svg>
-</div>
+<span class="dash-updated" data-updated="eth">Updating…</span></div>
 <div class="dash-card" data-symbol="gold">
-<div class="dash-card-top"><span class="dash-label">Gold</span><span class="dash-change up" data-change="">+0.31%</span></div>
+<div class="dash-card-top"><button aria-label="Add gold to watchlist" aria-pressed="false" class="watch-star" data-watch="gold" type="button">☆</button><span class="dash-label">Gold</span><span class="dash-change up" data-change="">+0.31%</span></div>
 <div class="dash-price" data-price="">$4,312</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="up" data-spark="" points="0,20 20,18 40,16 60,13 80,10 100,7"></polyline></svg>
-</div>
+<span class="dash-updated" data-updated="gold">Updating…</span></div>
 <div class="dash-card" data-symbol="eurusd">
-<div class="dash-card-top"><span class="dash-label">EUR/USD</span><span class="dash-change up" data-change="">+0.19%</span></div>
+<div class="dash-card-top"><button aria-label="Add eurusd to watchlist" aria-pressed="false" class="watch-star" data-watch="eurusd" type="button">☆</button><span class="dash-label">EUR/USD</span><span class="dash-change up" data-change="">+0.19%</span></div>
 <div class="dash-price" data-price="">1.0841</div>
 <svg aria-hidden="true" class="dash-spark" preserveaspectratio="none" viewbox="0 0 100 30"><polyline class="up" data-spark="" points="0,20 20,18 40,17 60,15 80,12 100,9"></polyline></svg>
-</div>
+<span class="dash-updated" data-updated="eurusd">Updating…</span></div>
 </div>
 <div class="top-mover" id="top-mover">
 <span class="top-mover-label">🔥 Today's Top Mover</span>
 <span class="top-mover-value" id="top-mover-value">Loading live data…</span>
 </div>
-<p class="pulse-disclaimer">Live prices update every 60 seconds. Trend lines are illustrative of direction, not tick-by-tick history.</p>
+<p class="pulse-disclaimer">Live prices update every 60 seconds. Click the Bitcoin or Ethereum card above to chart it. Trend lines are illustrative of direction, not tick-by-tick history.</p>
 <div class="live-chart-card">
 <div class="live-chart-head">
 <div>
-<span class="live-chart-title">Bitcoin — Last 24 Hours</span>
+<span class="live-chart-title" id="chart-title">Bitcoin — Last 24 Hours</span>
 <span class="live-chart-badge" id="chart-price">Loading…</span>
 </div>
 <span class="live-dot">● LIVE</span>
+</div>
+<div class="chart-range-toggle" role="group" aria-label="Chart time range">
+<button class="range-btn active" data-days="1" type="button">1D</button>
+<button class="range-btn" data-days="7" type="button">1W</button>
+<button class="range-btn" data-days="30" type="button">1M</button>
+<button class="range-btn" data-days="365" type="button">1Y</button>
 </div>
 <div class="chart-canvas-wrap">
 <canvas height="220" id="btc-chart"></canvas>

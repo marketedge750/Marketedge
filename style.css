@@ -403,14 +403,86 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .dash-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
 .dash-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .dash-label { font-size: 0.78rem; font-family: var(--ff-mono); color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.dash-change { font-size: 0.8rem; font-family: var(--ff-mono); font-weight: 600; }
-.dash-change.up { color: var(--green); }
-.dash-change.down { color: var(--red); }
-.dash-price { font-size: 1.5rem; font-weight: 700; font-family: var(--ff-display); margin-bottom: 10px; }
+.dash-change { font-size: 0.8rem; font-family: var(--ff-mono); font-weight: 600; padding: 2px 8px; border-radius: 999px; display: inline-block; }
+.dash-change.up { color: var(--green); background: rgba(26,155,94,0.1); }
+.dash-change.down { color: var(--red); background: rgba(192,57,43,0.1); }
+.dash-price { font-size: 1.5rem; font-weight: 700; font-family: var(--ff-mono); margin-bottom: 10px; }
 .dash-spark { width: 100%; height: 30px; display: block; }
 .dash-spark polyline { fill: none; stroke-width: 2; stroke: var(--ink-muted); }
 .dash-spark polyline.up { stroke: var(--green); }
 .dash-spark polyline.down { stroke: var(--red); }
+
+/* Watchlist star (item 3) */
+.watch-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--ink-muted);
+  padding: 0;
+  margin-right: 6px;
+  line-height: 1;
+  transition: color 0.15s, transform 0.15s;
+}
+.watch-star:hover { color: var(--gold); transform: scale(1.15); }
+.watch-star.is-watched { color: var(--gold); }
+.dash-card.is-watched { border-color: var(--gold); }
+
+/* "Updated Xs ago" label (item 6) */
+.dash-updated {
+  display: block;
+  font-size: 0.68rem;
+  font-family: var(--ff-mono);
+  color: var(--ink-muted);
+  margin-top: 8px;
+}
+.dash-card.is-chartable { cursor: pointer; }
+.dash-card.is-chartable:hover { border-color: var(--accent-hi); }
+
+.chart-range-toggle { display: flex; gap: 6px; margin-bottom: 14px; }
+.range-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.range-btn:hover { border-color: var(--accent-hi); color: var(--accent-hi); }
+.range-btn.active { background: var(--accent-hi); border-color: var(--accent-hi); color: var(--white); }
+
+/* Clickable in-article ticker mentions + popover (item 5) */
+.ticker-mention {
+  background: none;
+  border: none;
+  padding: 0 1px;
+  font: inherit;
+  font-family: var(--ff-mono);
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+  border-bottom: 1px dashed var(--accent);
+}
+.ticker-mention:hover { color: var(--accent-hi); border-bottom-style: solid; }
+.ticker-popover {
+  position: absolute;
+  z-index: 500;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 12px 16px;
+  min-width: 160px;
+}
+.ticker-popover-label { font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 4px; }
+.ticker-popover-price { font-family: var(--ff-mono); font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+.ticker-popover-change { font-family: var(--ff-mono); font-size: 0.78rem; font-weight: 600; margin-top: 2px; }
+.ticker-popover-change.up { color: var(--green); }
+.ticker-popover-change.down { color: var(--red); }
 
 .top-mover {
   margin-top: 20px;
@@ -1109,6 +1181,9 @@ html[data-theme="dark"] .main-content h2 { border-top-color: #30363D; }
 html[data-theme="dark"] .footer-bottom { border-top-color: #30363D; }
 html[data-theme="dark"] .live-chart-card { background: #161B22; border-color: #30363D; }
 html[data-theme="dark"] .live-chart-title { color: #E6EDF3; }
+html[data-theme="dark"] .ticker-popover { background: #161B22; border-color: #30363D; }
+html[data-theme="dark"] .ticker-popover-price { color: #E6EDF3; }
+html[data-theme="dark"] .range-btn { background: #161B22; border-color: #30363D; color: #8B93A1; }
 
 /* Text elements that inherited var(--ink) directly and weren't covered
    by any rule above — found via live screenshots after deploy: FAQ
