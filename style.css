@@ -151,7 +151,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .logo {
   font-family: var(--ff-display);
   font-size: 1.35rem;
-  color: var(--ink) !important;
+  color: var(--ink);
   flex-shrink: 0;
 }
 .logo span { color: var(--accent-hi); }
@@ -195,8 +195,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 }
 .theme-toggle {
   background: none;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  border: none;
   width: 36px;
   height: 36px;
   font-size: 1rem;
@@ -205,11 +204,11 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s;
+  transition: color 0.2s;
   flex-shrink: 0;
   margin-left: auto;
 }
-.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle:hover { color: var(--accent); }
 
 /* ===========================
    HERO
@@ -446,6 +445,11 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 }
 .live-chart-title { font-weight: 600; font-size: 0.95rem; margin-right: 10px; }
 .live-chart-badge { font-family: var(--ff-mono); font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+/* Chart.js with responsive:true + maintainAspectRatio:false sizes the
+   canvas to fill its parent — without an explicit height here, the parent
+   has none to give it, so the chart silently renders with degenerate
+   (near-zero or unbounded) height and looks blank. */
+.chart-canvas-wrap { position: relative; height: 260px; }
 .live-dot { font-size: 0.72rem; color: var(--red); font-weight: 600; letter-spacing: 0.04em; animation: pulse-dot 2s infinite; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
@@ -677,6 +681,11 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   font-family: var(--ff-mono);
   font-size: 0.75rem;
   color: rgba(255,255,255,0.4);
+}
+.byline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
 }
 
 /* ===========================
