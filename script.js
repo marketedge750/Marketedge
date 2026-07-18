@@ -190,50 +190,48 @@ async function updateEurUsd() {
 }
 
 // ===========================
-// S&P 500 / NASDAQ — via a Netlify Function proxy, NOT a direct client call.
-// The Twelve Data API key lives server-side only (Netlify env var
-// TWELVE_DATA_API_KEY), never shipped to the browser. See
-// netlify/functions/quote.js. This also means the free-tier quota (800
-// calls/day) is shared efficiently across all visitors from one server-side
-// cache instead of being burned per-visitor and scrapable from view-source.
+// S&P 500 / NASDAQ — read from a static JSON file instead of calling
+// Twelve Data directly from the browser (that would need the API key
+// exposed client-side) or via a serverless proxy (GitHub Pages can't run
+// one). Instead, .github/workflows/update-quotes.yml runs on a schedule,
+// calls Twelve Data with a key stored in GitHub Secrets, and commits the
+// result to data/quotes.json. This file only updates every ~15 minutes
+// (GitHub Actions' practical minimum), unlike BTC/Gold/EUR-USD above
+// which stay true 60-second live client-side calls to keyless APIs.
 // ===========================
-async function updateIndex(symbol, tickerKey, label) {
+const QUOTES_MAX_AGE_MS = 45 * 60 * 1000; // 3x the 15-min schedule, allows for Action delays
+
+async function updateIndices() {
   try {
-    const res = await fetch(`/.netlify/functions/quote?symbol=${symbol}`);
-    if (!res.ok) throw new Error(`Proxy returned ${res.status}`);
+    const res = await fetch(`/data/quotes.json?_=${Date.now()}`); // cache-bust
+    if (!res.ok) throw new Error(`quotes.json returned ${res.status}`);
     const data = await res.json();
-    if (data.error || !data.close) {
-      console.error(`Quote proxy error for ${symbol}:`, data.error || data);
-      markStale(tickerKey, label);
-      return;
-    }
-    const price = parseFloat(data.close);
-    const change = parseFloat(data.percent_change);
-    const isUp = change >= 0;
-    const arrow = isUp ? '▲' : '▼';
-    const sign = isUp ? '+' : '';
-    setTicker(tickerKey, `${label}  ${price.toLocaleString(undefined, {maximumFractionDigits: 0})} ${arrow} ${sign}${change.toFixed(2)}%`, isUp);
-    setDashCard(tickerKey, label, price.toLocaleString(undefined, {maximumFractionDigits: 0}), change);
+
+    const isFresh = data.updatedAt && (Date.now() - new Date(data.updatedAt).getTime()) < QUOTES_MAX_AGE_MS;
+
+    ['sp500', 'nasdaq'].forEach((key) => {
+      const entry = data[key];
+      if (!entry) { markStale(key); return; }
+      const { label, price, change } = entry;
+      const isUp = change >= 0;
+      const arrow = isUp ? '▲' : '▼';
+      const sign = isUp ? '+' : '';
+      setTicker(key, `${label}  ${price.toLocaleString(undefined, {maximumFractionDigits: 0})} ${arrow} ${sign}${change.toFixed(2)}%`, isUp);
+      setDashCard(key, label, price.toLocaleString(undefined, {maximumFractionDigits: 0}), change);
+      if (!isFresh) markStale(key, label); // file exists but the Action hasn't run recently
+    });
   } catch (err) {
-    console.error(`${label} fetch failed:`, err);
-    markStale(tickerKey, label);
+    console.error('Index quotes fetch failed:', err);
+    markStale('sp500', 'S&P 500');
+    markStale('nasdaq', 'NASDAQ');
   }
-}
-
-function updateSp500() {
-  updateIndex('SPX', 'sp500', 'S&P 500');
-}
-
-function updateNasdaq() {
-  updateIndex('IXIC', 'nasdaq', 'NASDAQ');
 }
 
 function refreshTicker() {
   updateBtc();
   updateGold();
   updateEurUsd();
-  updateSp500();
-  updateNasdaq();
+  updateIndices();
   // Note: 10Y Treasury yield was removed from the ticker — Twelve Data's
   // free tier doesn't cover bond yields, only equities/indices/forex/crypto.
 }
@@ -338,11 +336,18 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 });
 
 // Newsletter submit
-// TODO: netlify/functions/subscribe.js is a stub — wire it to your real ESP
-// (Mailchimp, ConvertKit, Buttondown, etc.) using their API + an env-var
-// API key, the same pattern as netlify/functions/quote.js. Until that's
-// done this will fail quietly server-side and the emails are NOT captured
-// anywhere — do not treat this as production-ready.
+// GitHub Pages can't run a server, so this posts to Formspree (a hosted
+// form backend made for static sites) instead of a custom serverless
+// function.
+//
+// SETUP REQUIRED (one-time):
+//   1. Create a free account at https://formspree.io
+//   2. Create a new form, copy its endpoint ID (looks like "xyzabcde")
+//   3. Replace YOUR_FORM_ID below with it.
+// Until that's done, every submission will fail with a 404 — the emails
+// are NOT captured anywhere yet.
+const FORMSPREE_FORM_ID = 'YOUR_FORM_ID';
+
 async function handleSubscribe(e) {
   e.preventDefault();
   const form = e.target;
@@ -353,12 +358,12 @@ async function handleSubscribe(e) {
   btn.disabled = true;
   btn.textContent = 'Subscribing…';
   try {
-    const res = await fetch('/.netlify/functions/subscribe', {
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ email }),
     });
-    if (!res.ok) throw new Error(`Subscribe endpoint returned ${res.status}`);
+    if (!res.ok) throw new Error(`Formspree returned ${res.status}`);
     btn.textContent = '✓ You\'re in!';
     btn.style.background = '#1A9B5E';
     input.value = '';
