@@ -74,7 +74,7 @@
 <main class="container" style="padding: 0 24px 80px;">
 <div class="tools-grid">
 <!-- Compound Interest Calculator -->
-<div class="tool-card">
+<div class="tool-card" id="compound-calculator">
 <h2>📈 Compound Interest Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Initial Investment ($)</label><input id="ci-initial" min="0" oninput="calcCompound()" step="100" type="number" value="10000"/></div>
@@ -92,7 +92,7 @@
 </div>
 </div>
 <!-- Retirement Calculator -->
-<div class="tool-card">
+<div class="tool-card" id="retirement-calculator">
 <h2>🎯 Retirement Number Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Monthly Expenses in Retirement ($)</label><input id="ret-expense" min="0" oninput="calcRetirement()" step="100" type="number" value="4000"/></div>
@@ -112,7 +112,7 @@
 </div>
 </div>
 <!-- Portfolio Allocation Calculator -->
-<div class="tool-card">
+<div class="tool-card" id="allocation-calculator">
 <h2>⚖️ Portfolio Allocation Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Your Age</label><input id="pa-age" max="100" min="18" oninput="calcAllocation()" type="number" value="30"/></div>
@@ -135,7 +135,7 @@
 </div>
 </div>
 <!-- Fee Impact Calculator -->
-<div class="tool-card">
+<div class="tool-card" id="fee-calculator">
 <h2>💸 Investment Fee Impact Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Portfolio Value ($)</label><input id="fee-value" min="0" oninput="calcFeeImpact()" step="1000" type="number" value="50000"/></div>
