@@ -571,8 +571,8 @@ if (hamburger) {
 const TV_SYMBOLS = {
   btc: { symbol: 'COINBASE:BTCUSD', label: 'Bitcoin' },
   eth: { symbol: 'COINBASE:ETHUSD', label: 'Ethereum' },
-  sp500: { symbol: 'SP:SPX', label: 'S&P 500' },
-  nasdaq: { symbol: 'NASDAQ:IXIC', label: 'NASDAQ Composite' },
+  sp500: { symbol: 'TVC:SPX', label: 'S&P 500' },
+  nasdaq: { symbol: 'TVC:IXIC', label: 'NASDAQ Composite' },
   gold: { symbol: 'TVC:GOLD', label: 'Gold' },
   eurusd: { symbol: 'FX:EURUSD', label: 'EUR/USD' },
 };
@@ -688,6 +688,14 @@ async function loadNews() {
     if (!res.ok) throw new Error(`news.json returned ${res.status}`);
     const data = await res.json();
     allNewsItems = data.items || [];
+
+    const summaryCard = document.getElementById('ai-summary-card');
+    const summaryText = document.getElementById('ai-summary-text');
+    if (summaryCard && summaryText && data.aiSummary) {
+      summaryText.textContent = data.aiSummary;
+      summaryCard.style.display = 'block';
+    }
+
     if (!allNewsItems.length) {
       list.innerHTML = '<p class="news-empty">News hasn\'t loaded yet — check back after the first scheduled update.</p>';
       return;
@@ -708,5 +716,39 @@ if (newsSearchInput) {
   });
 }
 if (document.getElementById('news-list')) loadNews();
+
+// ===========================
+// Crypto Screener — CoinGecko /coins/markets, no key needed, one call
+// returns price + 24h change + market cap for many coins at once.
+// ===========================
+async function loadScreener() {
+  const body = document.getElementById('screener-body');
+  if (!body) return;
+  try {
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&price_change_percentage=24h');
+    if (!res.ok) throw new Error(`CoinGecko returned ${res.status}`);
+    const coins = await res.json();
+    body.innerHTML = coins.map((c, i) => {
+      const change = c.price_change_percentage_24h ?? 0;
+      const isUp = change >= 0;
+      return `
+        <tr>
+          <td>${i + 1}</td>
+          <td class="screener-coin"><img alt="" src="${c.image}"/> <strong>${c.name}</strong> <span class="screener-symbol">${c.symbol.toUpperCase()}</span></td>
+          <td class="fee">$${c.current_price.toLocaleString(undefined, { maximumFractionDigits: c.current_price < 1 ? 4 : 2 })}</td>
+          <td class="dash-change ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+          <td class="fee">$${(c.market_cap / 1e9).toFixed(2)}B</td>
+        </tr>`;
+    }).join('');
+  } catch (err) {
+    console.error('Screener fetch failed:', err);
+    body.innerHTML = '<tr><td class="news-empty" colspan="5">Couldn\'t load screener data right now.</td></tr>';
+  }
+}
+if (document.getElementById('screener-body')) {
+  loadScreener();
+  setInterval(loadScreener, 60000);
+}
+
 
 
