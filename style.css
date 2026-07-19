@@ -435,8 +435,8 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   color: var(--ink-muted);
   margin-top: 8px;
 }
-.dash-card.is-chartable { cursor: pointer; }
-.dash-card.is-chartable:hover { border-color: var(--accent-hi); }
+.dash-card { cursor: pointer; }
+.dash-card:hover { border-color: var(--accent-hi); }
 
 .chart-range-toggle { display: flex; gap: 6px; margin-bottom: 14px; }
 .range-btn {
@@ -482,6 +482,93 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .ticker-popover-change { font-family: var(--ff-mono); font-size: 0.78rem; font-weight: 600; margin-top: 2px; }
 .ticker-popover-change.up { color: var(--green); }
 .ticker-popover-change.down { color: var(--red); }
+
+/* TradingView chart modal */
+.tv-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  padding: 24px;
+  align-items: center;
+  justify-content: center;
+}
+.tv-modal.is-open { display: flex; }
+.tv-modal-panel {
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 980px;
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+}
+.tv-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.tv-modal-title { font-family: var(--ff-display); font-size: 1.1rem; color: #E6EDF3; }
+.tv-modal-close {
+  background: none;
+  border: none;
+  color: #8B93A1;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.tv-modal-close:hover { color: #E6EDF3; }
+#tv-chart-container { height: 480px; }
+.tv-modal-credit { font-size: 0.7rem; color: #8B93A1; margin-top: 8px; text-align: right; }
+@media (max-width: 640px) {
+  #tv-chart-container { height: 340px; }
+  .tv-modal { padding: 0; }
+  .tv-modal-panel { max-width: 100%; height: 100%; border-radius: 0; overflow-y: auto; }
+}
+
+/* Market News block */
+.news-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.news-search-wrap { flex: 1; max-width: 320px; min-width: 200px; }
+.news-search {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 0.9rem;
+}
+.news-search:focus { outline: none; border-color: var(--accent-hi); }
+.news-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.news-item {
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.news-item:hover { border-color: var(--accent-hi); transform: translateY(-2px); }
+.news-item-source { font-size: 0.72rem; font-family: var(--ff-mono); color: var(--ink-muted); margin-bottom: 6px; }
+.news-item-title { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; line-height: 1.4; }
+.news-item-summary { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.5; }
+.news-empty { color: var(--ink-muted); font-size: 0.9rem; grid-column: 1 / -1; }
+@media (max-width: 720px) {
+  .news-list { grid-template-columns: 1fr; }
+  .news-head { flex-direction: column; align-items: stretch; }
+  .news-search-wrap { max-width: none; }
+}
 
 .top-mover {
   margin-top: 20px;
@@ -1141,6 +1228,7 @@ html[data-theme="dark"] .dash-card,
 html[data-theme="dark"] .trend-card:not(.featured),
 html[data-theme="dark"] .guide-card,
 html[data-theme="dark"] .tool-preview-card,
+html[data-theme="dark"] .news-item,
 html[data-theme="dark"] .tool-card,
 html[data-theme="dark"] .sidebar-widget,
 html[data-theme="dark"] .broker-review,
@@ -1202,3 +1290,5 @@ html[data-theme="dark"] .faq-q { color: #E6EDF3; }
 html[data-theme="dark"] .fact strong { color: #E6EDF3; }
 html[data-theme="dark"] .pick-info strong { color: #E6EDF3; }
 html[data-theme="dark"] .quick-nav strong { color: #E6EDF3; }
+html[data-theme="dark"] .news-item-title { color: #E6EDF3; }
+html[data-theme="dark"] .news-search { background: #161B22; border-color: #30363D; color: #E6EDF3; }

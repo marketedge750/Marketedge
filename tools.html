@@ -7,8 +7,8 @@
 <meta content="Free investing calculators: compound interest, portfolio growth, retirement planning, and more. No signup required." name="description"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=1784392322" rel="stylesheet"/>
-<script>(function(){try{var t=localStorage.getItem('fintorra-theme');var sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&sysDark)){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
+<link href="style.css?v=1784446846" rel="stylesheet"/>
+<script>(function(){try{var t=localStorage.getItem('fintorra-theme');if(t!=='light'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
 <style>
     .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
     .tool-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
@@ -75,7 +75,7 @@
 <div class="tools-grid">
 <!-- Compound Interest Calculator -->
 <div class="tool-card" id="compound-calculator">
-<h2>📈 Compound Interest Calculator</h2>
+<h2><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>Compound Interest Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Initial Investment ($)</label><input id="ci-initial" min="0" oninput="calcCompound()" step="100" type="number" value="10000"/></div>
 <div class="form-row"><label>Monthly Contribution ($)</label><input id="ci-monthly" min="0" oninput="calcCompound()" step="50" type="number" value="200"/></div>
@@ -93,7 +93,7 @@
 </div>
 <!-- Retirement Calculator -->
 <div class="tool-card" id="retirement-calculator">
-<h2>🎯 Retirement Number Calculator</h2>
+<h2><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>Retirement Number Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Monthly Expenses in Retirement ($)</label><input id="ret-expense" min="0" oninput="calcRetirement()" step="100" type="number" value="4000"/></div>
 <div class="form-row"><label>Safe Withdrawal Rate (%)</label><input id="ret-swr" max="10" min="1" oninput="calcRetirement()" step="0.1" type="number" value="4"/></div>
@@ -113,7 +113,7 @@
 </div>
 <!-- Portfolio Allocation Calculator -->
 <div class="tool-card" id="allocation-calculator">
-<h2>⚖️ Portfolio Allocation Calculator</h2>
+<h2><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>Portfolio Allocation Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Your Age</label><input id="pa-age" max="100" min="18" oninput="calcAllocation()" type="number" value="30"/></div>
 <div class="form-row"><label>Risk Tolerance</label>
@@ -136,7 +136,7 @@
 </div>
 <!-- Fee Impact Calculator -->
 <div class="tool-card" id="fee-calculator">
-<h2>💸 Investment Fee Impact Calculator</h2>
+<h2><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>Investment Fee Impact Calculator</h2>
 <div class="calc-form">
 <div class="form-row"><label>Portfolio Value ($)</label><input id="fee-value" min="0" oninput="calcFeeImpact()" step="1000" type="number" value="50000"/></div>
 <div class="form-row"><label>Annual Return Before Fees (%)</label><input id="fee-return" max="30" min="0" oninput="calcFeeImpact()" step="0.5" type="number" value="8"/></div>
@@ -156,7 +156,7 @@
 <div class="ad-slot" style="margin-top:40px;"><span class="ad-label">Advertisement</span><div class="ad-placeholder leaderboard" style="margin:0 auto;">[ Google AdSense — 728×90 ]</div></div>
 </main>
 <footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a class="logo" href="index.html">Fin<span>torra</span></a><p>Independent investing education. Not financial advice.</p></div><div class="footer-links"><div class="footer-col"><h4>Guides</h4><ul><li><a href="investing-basics.html">Basics</a></li><li><a href="etf-guide.html">ETFs</a></li><li><a href="broker-comparison.html">Brokers</a></li></ul></div></div></div><div class="footer-bottom container"><p>© 2026 Fintorra. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></div><div class="visitor-counter" style="text-align:center;padding:8px 0;"><img alt="Visitor count" src="https://api.visitorbadge.io/api/visitors?path=marketedge-zippy-pavlova-49449e&amp;label=Visitors&amp;countColor=%23263759&amp;style=flat"/></div></footer>
-<script src="script.js?v=1784392322"></script>
+<script src="script.js?v=1784446846"></script>
 <script>
     function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
 

@@ -101,7 +101,8 @@ function applyWatchlistState() {
   });
 }
 document.querySelectorAll('.watch-star').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
     const symbol = btn.getAttribute('data-watch');
     const list = getWatchlist();
     const idx = list.indexOf(symbol);
@@ -442,18 +443,6 @@ if (document.getElementById('btc-chart')) {
   updateCoinChart();
   setInterval(updateCoinChart, 60000);
 
-  document.querySelectorAll('.dash-card.is-chartable').forEach(card => {
-    card.addEventListener('click', () => {
-      currentCoin = {
-        id: card.getAttribute('data-coin-id'),
-        symbol: card.getAttribute('data-symbol'),
-        label: card.querySelector('.dash-label').textContent,
-      };
-      updateCoinChart();
-      document.querySelector('.live-chart-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  });
-
   document.querySelectorAll('.range-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentDays = parseInt(btn.getAttribute('data-days'), 10);
@@ -535,8 +524,7 @@ async function handleSubscribe(e) {
 (function () {
   const root = document.documentElement;
   const toggleBtn = document.getElementById('theme-toggle');
-  const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const saved = localStorage.getItem('fintorra-theme') || (systemPrefersDark ? 'dark' : 'light');
+  const saved = localStorage.getItem('fintorra-theme') || 'dark';
 
   function applyTheme(theme) {
     const sunSVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
@@ -573,3 +561,152 @@ if (hamburger) {
     }
   });
 }
+
+// ===========================
+// TradingView chart modal — click any ticker (top strip, every page) or
+// dashboard card (homepage) to open a free embedded TradingView chart.
+// No API key or account needed; tv.js is TradingView's public widget
+// script, loaded once on first click (not on every page load).
+// ===========================
+const TV_SYMBOLS = {
+  btc: { symbol: 'COINBASE:BTCUSD', label: 'Bitcoin' },
+  eth: { symbol: 'COINBASE:ETHUSD', label: 'Ethereum' },
+  sp500: { symbol: 'SP:SPX', label: 'S&P 500' },
+  nasdaq: { symbol: 'NASDAQ:IXIC', label: 'NASDAQ Composite' },
+  gold: { symbol: 'TVC:GOLD', label: 'Gold' },
+  eurusd: { symbol: 'FX:EURUSD', label: 'EUR/USD' },
+};
+
+let tvScriptLoaded = false;
+function loadTradingViewScript(onReady) {
+  if (tvScriptLoaded) { onReady(); return; }
+  const script = document.createElement('script');
+  script.src = 'https://s3.tradingview.com/tv.js';
+  script.onload = () => { tvScriptLoaded = true; onReady(); };
+  document.head.appendChild(script);
+}
+
+function ensureTvModal() {
+  let modal = document.getElementById('tv-modal');
+  if (modal) return modal;
+  modal = document.createElement('div');
+  modal.id = 'tv-modal';
+  modal.className = 'tv-modal';
+  modal.innerHTML = `
+    <div class="tv-modal-panel">
+      <div class="tv-modal-head">
+        <span class="tv-modal-title" id="tv-modal-title">Chart</span>
+        <button class="tv-modal-close" id="tv-modal-close" aria-label="Close chart" type="button">✕</button>
+      </div>
+      <div id="tv-chart-container"></div>
+      <p class="tv-modal-credit">Chart by TradingView</p>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeTvModal(); });
+  document.getElementById('tv-modal-close').addEventListener('click', closeTvModal);
+  return modal;
+}
+
+function closeTvModal() {
+  const modal = document.getElementById('tv-modal');
+  if (modal) modal.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+function openTvChart(key) {
+  const info = TV_SYMBOLS[key];
+  if (!info) return;
+  const modal = ensureTvModal();
+  document.getElementById('tv-modal-title').textContent = info.label;
+  modal.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  loadTradingViewScript(() => {
+    document.getElementById('tv-chart-container').innerHTML = '';
+    new TradingView.widget({
+      autosize: true,
+      symbol: info.symbol,
+      interval: '60',
+      timezone: 'Etc/UTC',
+      theme: 'dark',
+      style: '1',
+      locale: 'en',
+      toolbar_bg: '#161B22',
+      enable_publishing: false,
+      hide_top_toolbar: false,
+      allow_symbol_change: false,
+      container_id: 'tv-chart-container',
+    });
+  });
+}
+
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTvModal(); });
+
+document.querySelectorAll('.ticker-item[data-symbol], .dash-card[data-symbol]').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.addEventListener('click', () => openTvChart(el.getAttribute('data-symbol')));
+});
+
+// ===========================
+// Market News block (homepage) — reads data/news.json, written by
+// .github/workflows/update-news.yml from free RSS feeds. Shows title +
+// the feed's own short summary + source + link, never a rewritten copy
+// of the article body (see fetch-news.js for why).
+// ===========================
+let allNewsItems = [];
+
+function timeAgoFromDate(dateStr) {
+  if (!dateStr) return '';
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const h = Math.floor(diffMs / 3600000);
+  if (h < 1) return 'just now';
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+function renderNews(items) {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  if (!items.length) {
+    list.innerHTML = '<p class="news-empty">No headlines match your search.</p>';
+    return;
+  }
+  list.innerHTML = items.map(item => `
+    <a class="news-item" href="${item.link}" rel="noopener" target="_blank">
+      <div class="news-item-source">${item.source} · ${timeAgoFromDate(item.pubDate)}</div>
+      <h3 class="news-item-title">${item.title}</h3>
+      ${item.summary ? `<p class="news-item-summary">${item.summary}</p>` : ''}
+    </a>
+  `).join('');
+}
+
+async function loadNews() {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  try {
+    const res = await fetch(`data/news.json?_=${Date.now()}`);
+    if (!res.ok) throw new Error(`news.json returned ${res.status}`);
+    const data = await res.json();
+    allNewsItems = data.items || [];
+    if (!allNewsItems.length) {
+      list.innerHTML = '<p class="news-empty">News hasn\'t loaded yet — check back after the first scheduled update.</p>';
+      return;
+    }
+    renderNews(allNewsItems);
+  } catch (err) {
+    console.error('News fetch failed:', err);
+    list.innerHTML = '<p class="news-empty">Couldn\'t load headlines right now.</p>';
+  }
+}
+
+const newsSearchInput = document.getElementById('news-search');
+if (newsSearchInput) {
+  newsSearchInput.addEventListener('input', () => {
+    const q = newsSearchInput.value.trim().toLowerCase();
+    const filtered = q ? allNewsItems.filter(i => i.title.toLowerCase().includes(q)) : allNewsItems;
+    renderNews(filtered);
+  });
+}
+if (document.getElementById('news-list')) loadNews();
+
+

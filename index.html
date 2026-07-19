@@ -8,8 +8,8 @@
 <meta content="Evidence-based investing guides, market analysis, broker comparisons, and portfolio strategies for beginners and experienced investors." name="description"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=1784392322" rel="stylesheet"/>
-<script>(function(){try{var t=localStorage.getItem('fintorra-theme');var sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&sysDark)){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
+<link href="style.css?v=1784446846" rel="stylesheet"/>
+<script>(function(){try{var t=localStorage.getItem('fintorra-theme');if(t!=='light'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();</script>
 <link href="https://YOUR-DOMAIN-HERE.com/index.html" rel="canonical"/><meta content="Fintorra — Smart Investing for Modern Investors" property="og:title"/><meta content="Evidence-based investing guides, market analysis, broker comparisons, and portfolio strategies for beginners and experienced investors." property="og:description"/><meta content="website" property="og:type"/><meta content="https://YOUR-DOMAIN-HERE.com/index.html" property="og:url"/><meta content="https://YOUR-DOMAIN-HERE.com/og-default.jpg" property="og:image"/><meta content="Fintorra" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="Fintorra — Smart Investing for Modern Investors" name="twitter:title"/><meta content="Evidence-based investing guides, market analysis, broker comparisons, and portfolio strategies for beginners and experienced investors." name="twitter:description"/><meta content="https://YOUR-DOMAIN-HERE.com/og-default.jpg" name="twitter:image"/><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -134,6 +134,22 @@
 <p class="pulse-disclaimer">Real historical price data from CoinGecko, refreshed every 60 seconds.</p>
 </div>
 </section>
+<!-- MARKET NEWS -->
+<section class="market-news section-gap container" id="market-news">
+<div class="news-head">
+<div>
+<div class="section-eyebrow">Market News</div>
+<h2 class="section-title">Latest Headlines</h2>
+</div>
+<div class="news-search-wrap">
+<input aria-label="Search news headlines" class="news-search" id="news-search" placeholder="Search headlines…" type="search"/>
+</div>
+</div>
+<div class="news-list" id="news-list">
+<p class="news-empty">Loading headlines…</p>
+</div>
+<p class="pulse-disclaimer">Headlines and summaries are pulled from their original publishers, refreshed every 2 hours. Click any headline to read the full article at the source.</p>
+</section>
 <!-- CATEGORY NAV -->
 <div class="category-pills container">
 <a class="pill active" href="#trending">Markets</a>
@@ -254,25 +270,25 @@
 <div class="tools-preview-grid">
 <a class="tool-preview-card" href="tools.html#compound-calculator">
 <span class="tool-badge">Most Used</span>
-<div class="guide-icon">📈</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
 <h3>Compound Interest Calculator</h3>
 <p>See what your monthly contributions could grow into over time.</p>
 <span class="guide-link">Try it →</span>
 </a>
 <a class="tool-preview-card" href="tools.html#retirement-calculator">
-<div class="guide-icon">🎯</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
 <h3>Retirement Number Calculator</h3>
 <p>Find your target nest egg and how many years it'll take to get there.</p>
 <span class="guide-link">Try it →</span>
 </a>
 <a class="tool-preview-card" href="tools.html#allocation-calculator">
-<div class="guide-icon">⚖️</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>
 <h3>Portfolio Allocation Calculator</h3>
 <p>A stocks/bonds/cash starting point based on your age and risk tolerance.</p>
 <span class="guide-link">Try it →</span>
 </a>
 <a class="tool-preview-card" href="tools.html#fee-calculator">
-<div class="guide-icon">💸</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg></div>
 <h3>Fee Impact Calculator</h3>
 <p>See how much a 1% fee really costs you over 20-30 years.</p>
 <span class="guide-link">Try it →</span>
@@ -285,13 +301,13 @@
 <h2 class="section-title">Essential Guides</h2>
 <div class="guides-grid">
 <a class="guide-card" href="investing-basics.html">
-<div class="guide-icon">📈</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
 <h3>Investing Basics</h3>
 <p>Stocks, bonds, ETFs, and how markets actually work — explained without jargon.</p>
 <span class="guide-link">Read guide →</span>
 </a>
 <a class="guide-card" href="etf-guide.html">
-<div class="guide-icon">🗂️</div>
+<div class="guide-icon"><svg class="tool-icon-svg" fill="none" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></div>
 <h3>ETF &amp; Index Funds</h3>
 <p>Why index funds beat most active managers — and which ones to choose.</p>
 <span class="guide-link">Read guide →</span>
@@ -373,6 +389,6 @@
 </div>
 <div class="visitor-counter" style="text-align:center;padding:8px 0;"><img alt="Visitor count" src="https://api.visitorbadge.io/api/visitors?path=marketedge-zippy-pavlova-49449e&amp;label=Visitors&amp;countColor=%23263759&amp;style=flat"/></div></footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="script.js?v=1784392322"></script>
+<script src="script.js?v=1784446846"></script>
 </body>
 </html>
