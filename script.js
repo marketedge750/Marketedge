@@ -664,21 +664,73 @@ function timeAgoFromDate(dateStr) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
+let currentRenderedNews = [];
 function renderNews(items) {
   const list = document.getElementById('news-list');
   if (!list) return;
+  currentRenderedNews = items;
   if (!items.length) {
     list.innerHTML = '<p class="news-empty">No headlines match your search.</p>';
     return;
   }
-  list.innerHTML = items.map(item => `
-    <a class="news-item" href="${item.link}" rel="noopener" target="_blank">
+  list.innerHTML = items.map((item, i) => `
+    <button class="news-item" data-news-index="${i}" type="button">
       <div class="news-item-source">${item.source} · ${timeAgoFromDate(item.pubDate)}</div>
       <h3 class="news-item-title">${item.title}</h3>
       ${item.summary ? `<p class="news-item-summary">${item.summary}</p>` : ''}
-    </a>
+    </button>
   `).join('');
+  list.querySelectorAll('.news-item').forEach(btn => {
+    btn.addEventListener('click', () => openNewsPopup(currentRenderedNews[parseInt(btn.getAttribute('data-news-index'), 10)]));
+  });
 }
+
+// News popup — shows the headline, source, and the feed's own short
+// excerpt in an in-page overlay instead of navigating away. This is
+// deliberately NOT the full article body: the RSS feeds only ever
+// provide title + short excerpt, and reproducing a full article here
+// would raise real copyright/ToS problems with the source publishers.
+// "Read full article" still opens the source for the complete piece.
+function ensureNewsModal() {
+  let modal = document.getElementById('news-modal');
+  if (modal) return modal;
+  modal = document.createElement('div');
+  modal.id = 'news-modal';
+  modal.className = 'tv-modal';
+  modal.innerHTML = `
+    <div class="tv-modal-panel news-modal-panel">
+      <div class="tv-modal-head">
+        <span class="tv-modal-title" id="news-modal-source"></span>
+        <button class="tv-modal-close" id="news-modal-close" aria-label="Close" type="button">✕</button>
+      </div>
+      <h3 class="news-modal-title" id="news-modal-title"></h3>
+      <p class="news-modal-meta" id="news-modal-meta"></p>
+      <p class="news-modal-summary" id="news-modal-summary"></p>
+      <a class="btn-primary sm" id="news-modal-link" rel="noopener" target="_blank">Read full article →</a>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeNewsModal(); });
+  document.getElementById('news-modal-close').addEventListener('click', closeNewsModal);
+  return modal;
+}
+function closeNewsModal() {
+  const modal = document.getElementById('news-modal');
+  if (modal) modal.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+function openNewsPopup(item) {
+  if (!item) return;
+  const modal = ensureNewsModal();
+  document.getElementById('news-modal-source').textContent = item.source;
+  document.getElementById('news-modal-title').textContent = item.title;
+  document.getElementById('news-modal-meta').textContent = timeAgoFromDate(item.pubDate);
+  document.getElementById('news-modal-summary').textContent = item.summary || 'No summary available for this story.';
+  document.getElementById('news-modal-link').href = item.link;
+  modal.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNewsModal(); });
 
 async function loadNews() {
   const list = document.getElementById('news-list');
