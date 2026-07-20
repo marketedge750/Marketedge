@@ -27,11 +27,6 @@
   --radius-lg: 14px;
   --shadow: 0 2px 12px rgba(0,0,0,0.07);
   --shadow-lg: 0 8px 40px rgba(0,0,0,0.1);
-
-  /* Single source of truth for the ticker strip's height, so .nav's
-     sticky offset can never drift out of sync with it (was a hardcoded
-     "top: 34px" magic number before). */
-  --ticker-height: 34px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -135,7 +130,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
    =========================== */
 .nav {
   position: sticky;
-  top: var(--ticker-height);
+  top: 0;
   z-index: 100;
   background: #FFFFFF;
   backdrop-filter: blur(10px);
@@ -215,7 +210,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .hero {
   background: linear-gradient(160deg, var(--ink) 0%, #1A2535 60%, #152640 100%);
   color: var(--white);
-  padding: 90px 0 0;
+  padding: 44px 0 0;
   overflow: hidden;
   position: relative;
 }
@@ -263,7 +258,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   .hero-chart-svg { width: 90%; opacity: 0.22; }
 }
 
-.hero-inner { position: relative; z-index: 1; padding-bottom: 60px; }
+.hero-inner { position: relative; z-index: 1; padding-bottom: 32px; }
 
 .hero-badge {
   display: inline-block;
@@ -276,22 +271,22 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   text-transform: uppercase;
   padding: 5px 12px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2rem, 4.5vw, 3rem);
   color: var(--white);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   max-width: 600px;
 }
 .hero-title em { color: var(--accent-hi); font-style: italic; }
 
 .hero-sub {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: rgba(255,255,255,0.7);
   max-width: 520px;
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .hero-actions { display: flex; gap: 12px; margin-bottom: 56px; flex-wrap: wrap; }
@@ -308,32 +303,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 .stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.15); }
 
-/* TICKER — persistent strip above the nav, present on every page */
-.market-strip {
-  background: #0D1117;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  height: var(--ticker-height);
-  box-sizing: border-box;
-  padding: 8px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: sticky;
-  top: 0;
-  z-index: 101;
-}
-.ticker-track {
-  display: inline-flex;
-  gap: 48px;
-  animation: ticker 30s linear infinite;
-}
-.ticker-item {
-  font-family: var(--ff-mono);
-  font-size: 0.76rem;
-  color: rgba(255,255,255,0.6);
-}
-.ticker-item.up { color: #4ade80; }
-.ticker-item.down { color: #f87171; }
-
 /* Stale-data indicator — a failed refresh should never be silent.
    Dims the value and adds a small warning dot; the title="" attribute
    (set in script.js) supplies the tooltip explanation. */
@@ -343,11 +312,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   font-size: 0.7em;
   margin-left: 4px;
   opacity: 0.9;
-}
-
-@keyframes ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 /* ===========================
@@ -386,6 +350,8 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 /* ===========================
    MARKET PULSE DASHBOARD
    =========================== */
+.top-dash { margin: 20px auto; }
+
 .pulse-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -518,6 +484,12 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .tv-modal-close:hover { color: #E6EDF3; }
 #tv-chart-container { height: 480px; }
 .tv-modal-credit { font-size: 0.7rem; color: #8B93A1; margin-top: 8px; text-align: right; }
+.econ-calendar-widget {
+  background: #131722;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 400px;
+}
 .news-modal-panel { max-width: 560px; }
 .news-modal-title { font-family: var(--ff-display); font-size: 1.3rem; color: #E6EDF3; line-height: 1.4; margin-bottom: 8px; }
 .news-modal-meta { font-size: 0.75rem; font-family: var(--ff-mono); color: #8B93A1; margin-bottom: 16px; }
@@ -850,7 +822,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 }
 /* So a deep link like tools.html#compound-calculator doesn't land the
    card underneath the sticky ticker + nav */
-.tool-card { scroll-margin-top: calc(var(--ticker-height) + 64px + 20px); }
+.tool-card { scroll-margin-top: calc(64px + 20px); }
 
 /* ===========================
    NEWSLETTER
@@ -1177,6 +1149,19 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
    =========================== */
 @media (max-width: 1100px) {
   .nav-links { display: none; }
+  .nav-links.nav-links-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    padding: 16px 24px;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+  }
   .hamburger { display: block; }
 
   .pulse-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1252,6 +1237,7 @@ html[data-theme="dark"] .section-eyebrow { color: var(--accent-hi); }
 
 /* Nav (ticker strip & hero stay dark in both themes already) */
 html[data-theme="dark"] .nav { background: #0D1117; border-bottom-color: #30363D; }
+html[data-theme="dark"] .nav-links-open { background: #0D1117; border-bottom-color: #30363D; }
 html[data-theme="dark"] .logo { color: #E6EDF3; }
 html[data-theme="dark"] .nav-links a { color: #C3CAD4; }
 html[data-theme="dark"] .nav-links a:hover, html[data-theme="dark"] .nav-links a.active { color: var(--accent-hi); }

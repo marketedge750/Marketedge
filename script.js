@@ -10,12 +10,12 @@ let lastEurUsd = null;
 let lastGold = null;
 const movers = {};
 
-function setTicker(symbol, text, isUp) {
-  document.querySelectorAll(`.ticker-item[data-symbol="${symbol}"]`).forEach(el => {
-    el.textContent = text;
-    el.classList.remove('up', 'down');
-    el.classList.add(isUp ? 'up' : 'down');
-  });
+// setTicker previously also updated the scrolling ticker-item strip above
+// the nav; that strip was removed site-wide in favor of the dashboard
+// cards below, so this now only tracks freshness. Kept as a named
+// function (rather than inlining markFresh at every call site) so the
+// many callers below didn't all need touching.
+function setTicker(symbol) {
   markFresh(symbol);
 }
 
@@ -354,7 +354,7 @@ function refreshTicker() {
   // free tier doesn't cover bond yields, only equities/indices/forex/crypto.
 }
 
-if (document.querySelector('.market-strip')) {
+if (document.querySelector('.dash-card')) {
   refreshTicker();
   setInterval(refreshTicker, 60000); // refresh every 60 seconds
 }
@@ -555,10 +555,7 @@ const hamburger = document.getElementById('hamburger');
 if (hamburger) {
   hamburger.addEventListener('click', () => {
     const links = document.querySelector('.nav-links');
-    if (links) {
-      const visible = links.style.display === 'flex';
-      links.style.cssText = visible ? '' : 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#fff;padding:16px 24px;gap:16px;border-bottom:1px solid #E4E7ED;z-index:99';
-    }
+    if (links) links.classList.toggle('nav-links-open');
   });
 }
 
@@ -642,7 +639,7 @@ function openTvChart(key) {
 
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTvModal(); });
 
-document.querySelectorAll('.ticker-item[data-symbol], .dash-card[data-symbol]').forEach(el => {
+document.querySelectorAll('.dash-card[data-symbol]').forEach(el => {
   el.style.cursor = 'pointer';
   el.addEventListener('click', () => openTvChart(el.getAttribute('data-symbol')));
 });
