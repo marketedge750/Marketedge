@@ -348,57 +348,24 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .ad-slot-mid { display: flex; flex-direction: column; align-items: center; }
 
 /* ===========================
-   MARKET PULSE DASHBOARD
+   MARKET TICKER
    =========================== */
 .top-dash { margin: 20px auto; }
-
-.pulse-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin-top: 24px;
-  background: var(--white);
-}
-.dash-card {
-  padding: 20px 22px;
-  border-right: 1px solid var(--border);
+.ticker-tape-wrap {
+  background: #131722;
   border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-  cursor: pointer;
-  position: relative;
+  min-height: 46px;
 }
-.dash-card:nth-child(2n) { border-right: none; }
-.dash-card:nth-last-child(-n+2) { border-bottom: none; }
-.dash-card:hover { background: var(--surface); }
-.dash-card-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-.dash-label { font-size: 0.78rem; font-family: var(--ff-mono); color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.dash-symbol { font-size: 0.78rem; font-family: var(--ff-mono); font-weight: 700; color: var(--accent-hi); text-transform: uppercase; letter-spacing: 0.03em; }
-.dash-price { font-size: 2.1rem; font-weight: 700; font-family: var(--ff-mono); line-height: 1; margin-bottom: 8px; }
+
+/* .dash-change is also used by the crypto screener table for up/down
+   coloring (see script.js loadScreener) — kept even though the old
+   dashboard cards that originally used it were removed. */
 .dash-change { font-size: 0.9rem; font-family: var(--ff-mono); font-weight: 600; }
 .dash-change.up { color: var(--green); }
 .dash-change.down { color: var(--red); }
 .dash-change::before { margin-right: 4px; }
 .dash-change.up::before { content: '▲'; }
 .dash-change.down::before { content: '▼'; }
-.dash-spark { display: none; }
-.watch-star { position: absolute; top: 16px; right: 16px; opacity: 0; }
-.dash-card:hover .watch-star, .watch-star.is-watched { opacity: 1; }
-/* Watchlist star */
-.watch-star {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  color: var(--ink-muted);
-  padding: 0;
-  line-height: 1;
-  transition: color 0.15s, transform 0.15s, opacity 0.15s;
-}
-.watch-star:hover { color: var(--gold); transform: scale(1.15); }
-.watch-star.is-watched { color: var(--gold); }
-.dash-card.is-watched { background: var(--accent-lt); }
 
 .chart-range-toggle { display: flex; gap: 6px; margin-bottom: 14px; }
 .range-btn {
@@ -1164,7 +1131,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   }
   .hamburger { display: block; }
 
-  .pulse-grid { grid-template-columns: repeat(2, 1fr); }
   .content-sidebar-layout { grid-template-columns: 1fr; }
   .sidebar { display: none; }
 
@@ -1184,9 +1150,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   .ad-slot { padding-top: 10px; padding-bottom: 10px; }
   .brokers-preview.section-gap { padding-bottom: 24px; }
   .guides.section-gap { padding-top: 24px; }
-  .pulse-grid { grid-template-columns: 1fr 1fr; }
-  .dash-card { padding: 14px 16px; }
-  .dash-price { font-size: 1.6rem; }
   .category-pills { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .guides-grid { grid-template-columns: 1fr; }
   .tools-preview-grid { grid-template-columns: 1fr; }
