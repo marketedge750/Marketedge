@@ -214,6 +214,12 @@ function updateTopMover() {
 }
 
 function setDashCard(symbol, label, priceText, changePercent) {
+  movers[symbol] = { label, change: changePercent };
+  updateTopMover();
+
+  // The visual dashboard cards were replaced by the TradingView Ticker
+  // Tape widget, so there's usually no .dash-card to update anymore —
+  // this just becomes a no-op below, which is fine.
   const card = document.querySelector(`.dash-card[data-symbol="${symbol}"]`);
   if (!card) return;
   const isUp = changePercent >= 0;
@@ -231,8 +237,6 @@ function setDashCard(symbol, label, priceText, changePercent) {
     sparkEl.classList.remove('up', 'down');
     sparkEl.classList.add(isUp ? 'up' : 'down');
   }
-  movers[symbol] = { label, change: changePercent };
-  updateTopMover();
 }
 
 async function updateBtc() {
@@ -670,39 +674,4 @@ if (newsSearchInput) {
   });
 }
 if (document.getElementById('news-list')) loadNews();
-
-// ===========================
-// Crypto Screener — CoinGecko /coins/markets, no key needed, one call
-// returns price + 24h change + market cap for many coins at once.
-// ===========================
-async function loadScreener() {
-  const body = document.getElementById('screener-body');
-  if (!body) return;
-  try {
-    const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&price_change_percentage=24h');
-    if (!res.ok) throw new Error(`CoinGecko returned ${res.status}`);
-    const coins = await res.json();
-    body.innerHTML = coins.map((c, i) => {
-      const change = c.price_change_percentage_24h ?? 0;
-      const isUp = change >= 0;
-      return `
-        <tr>
-          <td>${i + 1}</td>
-          <td class="screener-coin"><img alt="" src="${c.image}"/> <strong>${c.name}</strong> <span class="screener-symbol">${c.symbol.toUpperCase()}</span></td>
-          <td class="fee">$${c.current_price.toLocaleString(undefined, { maximumFractionDigits: c.current_price < 1 ? 4 : 2 })}</td>
-          <td class="dash-change ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-          <td class="fee">$${(c.market_cap / 1e9).toFixed(2)}B</td>
-        </tr>`;
-    }).join('');
-  } catch (err) {
-    console.error('Screener fetch failed:', err);
-    body.innerHTML = '<tr><td class="news-empty" colspan="5">Couldn\'t load screener data right now.</td></tr>';
-  }
-}
-if (document.getElementById('screener-body')) {
-  loadScreener();
-  setInterval(loadScreener, 60000);
-}
-
-
 

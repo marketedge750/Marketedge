@@ -46,7 +46,7 @@ body {
    LAYOUT
    =========================== */
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-.section-gap { padding-top: 80px; padding-bottom: 80px; }
+.section-gap { padding-top: 48px; padding-bottom: 48px; }
 
 .content-sidebar-layout {
   display: grid;
@@ -357,32 +357,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
   min-height: 46px;
 }
 
-/* .dash-change is also used by the crypto screener table for up/down
-   coloring (see script.js loadScreener) — kept even though the old
-   dashboard cards that originally used it were removed. */
-.dash-change { font-size: 0.9rem; font-family: var(--ff-mono); font-weight: 600; }
-.dash-change.up { color: var(--green); }
-.dash-change.down { color: var(--red); }
-.dash-change::before { margin-right: 4px; }
-.dash-change.up::before { content: '▲'; }
-.dash-change.down::before { content: '▼'; }
-
-.chart-range-toggle { display: flex; gap: 6px; margin-bottom: 14px; }
-.range-btn {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--ink-muted);
-  font-family: var(--ff-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.range-btn:hover { border-color: var(--accent-hi); color: var(--accent-hi); }
-.range-btn.active { background: var(--accent-hi); border-color: var(--accent-hi); color: var(--white); }
-
 /* Clickable in-article ticker mentions + popover (item 5) */
 .ticker-mention {
   background: none;
@@ -451,12 +425,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .tv-modal-close:hover { color: #E6EDF3; }
 #tv-chart-container { height: 480px; }
 .tv-modal-credit { font-size: 0.7rem; color: #8B93A1; margin-top: 8px; text-align: right; }
-.econ-calendar-widget {
-  background: #131722;
-  border-radius: var(--radius);
-  overflow: hidden;
-  min-height: 400px;
-}
 .news-modal-panel { max-width: 560px; }
 .news-modal-title { font-family: var(--ff-display); font-size: 1.3rem; color: #E6EDF3; line-height: 1.4; margin-bottom: 8px; }
 .news-modal-meta { font-size: 0.75rem; font-family: var(--ff-mono); color: #8B93A1; margin-bottom: 16px; }
@@ -525,24 +493,6 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 .ai-summary-label { font-family: var(--ff-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .ai-summary-text { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 8px; }
 .ai-summary-note { font-size: 0.72rem; color: var(--ink-muted); }
-
-/* Crypto Screener */
-.screener-table-wrap { overflow-x: auto; margin: 24px 0; }
-.screener-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-.screener-table th {
-  text-align: left;
-  padding: 10px 14px;
-  font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--ink-muted);
-  border-bottom: 2px solid var(--border);
-}
-.screener-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-.screener-coin { display: flex; align-items: center; gap: 8px; }
-.screener-coin img { width: 20px; height: 20px; border-radius: 50%; }
-.screener-symbol { color: var(--ink-muted); font-family: var(--ff-mono); font-size: 0.78rem; }
 
 .top-mover {
   margin-top: 20px;
@@ -748,6 +698,14 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 }
 .guide-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); border-color: var(--accent); }
 .guide-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+.tool-icon-svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .guide-card h3 { font-size: 1rem; color: var(--ink); margin-bottom: 8px; }
 .guide-card p { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 16px; }
 .guide-link { font-size: 0.82rem; font-weight: 600; color: var(--accent); }
@@ -1146,7 +1104,7 @@ li { margin-bottom: 6px; color: var(--ink-soft); }
 }
 
 @media (max-width: 600px) {
-  .section-gap { padding-top: 44px; padding-bottom: 44px; }
+  .section-gap { padding-top: 32px; padding-bottom: 32px; }
   .ad-slot { padding-top: 10px; padding-bottom: 10px; }
   .brokers-preview.section-gap { padding-bottom: 24px; }
   .guides.section-gap { padding-top: 24px; }
